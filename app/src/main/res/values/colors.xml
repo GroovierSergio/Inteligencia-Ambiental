@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="appcolor">#e2ae24</color>
+
+    <color name="Turquoise">#1abc9c</color>
+    <color name="GreenSea">#16a085</color>
+    <color name="Sunflower">#f1c40f</color>
+    <color name="Orange">#f39c12</color>
+
+    <color name="Emerald">#2ecc71 </color>
+    <color name="Nephritis">#27ae60 </color>
+    <color name="Carrot">#e67e22 </color>
+    <color name="Pumpkin">#d35400 </color>
+
+    <color name="PeterRiver">#3498db </color>
+    <color name="BelizeHole">#2980b9 </color>
+    <color name="Alizarin">#e74c3c </color>
+    <color name="Pomergranate">#c0392b </color>
+
+    <color name="Amethyst">#9b59b6 </color>
+    <color name="Wisteria">#8e44ad </color>
+    <color name="Clouds">#ecf0f1 </color>
+    <color name="Silver">#bdc3c7 </color>
+
+    <color name="WetAsphalt">#34495e </color>
+    <color name="MidnightBlue">#2c3e50 </color>
+    <color name="Concrete">#95a5a6 </color>
+    <color name="Asbestos">#7f8c8d </color>
+</resources>
