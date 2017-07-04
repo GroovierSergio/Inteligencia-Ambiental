@@ -32,4 +32,6 @@
         app:borderWidth="0dp"
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@drawable/scan" />
+
 </android.support.design.widget.CoordinatorLayout>
+

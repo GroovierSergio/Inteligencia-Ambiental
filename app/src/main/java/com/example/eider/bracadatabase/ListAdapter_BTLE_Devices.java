@@ -18,6 +18,9 @@ public class ListAdapter_BTLE_Devices extends ArrayAdapter<BTLE_Device> {
 
     Activity activity;
     int layoutResourceID;
+    String[] MyBeaconsMac = {"F1:82:F5:F1:79:E8", "C0:62:E9:C5:37:F5", "F7:D4:CF:09:98:F0" ,"DD:BE:F9:A1:D8:99","D4:88:E6:45:E1:2B"};
+    String[] MyBeaconsName = {"BEACON 1", "BEACON 2", "BEACON 3" ,"BEACON 4","BEACON 5"};
+
     ArrayList<BTLE_Device> devices;
 
     public ListAdapter_BTLE_Devices(Activity activity, int resource, ArrayList<BTLE_Device> objects) {
@@ -39,6 +42,12 @@ public class ListAdapter_BTLE_Devices extends ArrayAdapter<BTLE_Device> {
 
         BTLE_Device device = devices.get(position);
         String name = device.getName();
+        //TODO: cambiar el nombre del beacon por el numero de beacon
+        for (int i = 0; i < MyBeaconsMac.length; i++) {
+            if (MyBeaconsMac[i].equals(device.getAddress())) {
+                name = MyBeaconsName[i];
+            }
+        }
         String address = device.getAddress();
         int rssi = device.getRSSI();
 
@@ -46,7 +55,7 @@ public class ListAdapter_BTLE_Devices extends ArrayAdapter<BTLE_Device> {
 
         tv = (TextView) convertView.findViewById(R.id.tv_name);
         if (name != null && name.length() > 0) {
-            tv.setText(device.getName());
+            tv.setText(name);
         }
         else {
             tv.setText("No Name");

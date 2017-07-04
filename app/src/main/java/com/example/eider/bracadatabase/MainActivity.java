@@ -11,6 +11,7 @@ import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +27,13 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -47,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         private ImageView btn_Scan;
         private BroadcastReceiver_BTState mBTStateUpdateReceiver;
         private Scanner_BTLE mBTLeScanner;
-    private Button peneson;
+    private Button export;
         private FloatingActionButton bConsulta;
     EditText nombre,numero,correo;
 
@@ -57,6 +65,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        export = (Button) findViewById(R.id.exportar);
+        export.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exportDB();
+            }
+        });
         //////////////////////////////////////////////////
         /*peneson =(Button)findViewById(R.id.pene);
         peneson.setOnClickListener(new View.OnClickListener() {
@@ -361,6 +376,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             db.close();
         }
     }
+    private void exportDB(){
+    String NAME_DB= "EnviromentalIntel.db";
+;    File sd = Environment.getExternalStorageDirectory();
+    File data = Environment.getDataDirectory();
+    FileChannel source=null;
+    FileChannel destination=null;
+    String currentDBPath = "/data/"+ "com.example.eider.4bracadatabase" +"/databases/"+NAME_DB;
+    String backupDBPath = NAME_DB;
+    File currentDB = new File(data, currentDBPath);
+    File backupDB = new File(sd, backupDBPath);
+
+       try {
+        source = new FileInputStream(currentDB).getChannel();
+        destination = new FileOutputStream(backupDB).getChannel();
+        destination.transferFrom(source, 0, source.size());
+        source.close();
+        destination.close();
+        Toast.makeText(this, "DB Exported!", Toast.LENGTH_LONG).show();
+    } catch(IOException e) {
+           Toast.makeText(this, "error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+
+       }
+}
+
 }
 
 

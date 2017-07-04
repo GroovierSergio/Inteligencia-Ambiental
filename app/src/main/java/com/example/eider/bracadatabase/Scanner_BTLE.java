@@ -25,12 +25,9 @@ public class Scanner_BTLE {
 
     public Scanner_BTLE(MainActivity mainActivity, long scanPeriod, int signalStrength) {
         ma = mainActivity;
-
         mHandler = new Handler();
-
         this.scanPeriod = scanPeriod;
         this.signalStrength = signalStrength;
-
         final BluetoothManager bluetoothManager =
                 (BluetoothManager) ma.getSystemService(Context.BLUETOOTH_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
@@ -68,12 +65,10 @@ public class Scanner_BTLE {
                 @Override
                 public void run() {
                     Utils.toast(ma.getApplicationContext(), "Stopping BLE scan...");
-
                     mScanning = false;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
                         mBluetoothAdapter.stopLeScan(mLeScanCallback);
                     }
-
                     ma.stopScan();
                 }
             }, scanPeriod);
