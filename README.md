@@ -1,5 +1,5 @@
 <H1 align = "center">
-  :pushpin: Inteligencia medioambientaL
+  :pushpin: Inteligencia ambiental
   <a href="#">
   </a>
 </H1>
@@ -8,19 +8,20 @@ Este trabajo presenta la implementación de un sistema de inteligencia ambiental
 
 # :eyes: Descripción general
 Aplicación ligera y flexible, esta aplicación de Android captura RSSI (Indicador de intensidad de señal recibida) emitida por las balizas para obtener una ubicación más rápida y precisa dentro de un edificio.
-Este proyecto funciona con Bluetooth Beacons y cualquier dispositivo con Android 4.3 y un chipset Bluetooth de baja energía.
-#Ejemplo
+Este proyecto funciona con [Bluetooth Beacons BEEKS](https://github.com/EiderDiaz/Inteligencia-Ambiental/blob/master/Specs-iBEEK1.6.pdf)  y cualquier dispositivo con Android 4.3 y un chipset Bluetooth low energy.
 
-## screencaps
+# Ejemplo
 
-# : Runner: Primeros pasos
-- código:
+##  aqui van las screencaps
+
+# :runner: Primeros pasos
+- [preparacion experimental]
 - Documentación compilada
-Correo
+- Correo
 
 
 
-# : Computer: Detailed usage e Información para el desarrollador
+# : computer: Detailed usage e Información para el desarrollador
 - modelos e interfaz
 Ejemplos
 - configuración
@@ -31,7 +32,7 @@ Ejemplos
 - Limitaciones y problemas conocidos
 - rendimiento y evaluación comparativa  
 
-# : Closed_book: Colofón
+# : closed_book: Colofón
 - Créditos - todos los que han contribuido código, bibliotecas de las que hemos prestado código.
 - Derechos de autor y licencia: especifique el tipo de licencia (normalmente "Apache 2.0" o "Todos los derechos reservados y confidenciales") y consulte el archivo LICENSE.md. No pegue el contenido de la licencia aquí.
 - Cómo contribuir
