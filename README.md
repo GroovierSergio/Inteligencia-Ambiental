@@ -15,9 +15,9 @@ Este proyecto funciona con [Bluetooth Beacons BEEKS](https://github.com/EiderDia
 ##  aqui van las screencaps
 
 # :runner: Primeros pasos
-- [preparacion experimental]
+- [preparacion experimental](https://github.com/EiderDiaz/Inteligencia-Ambiental/blob/master/Preparaci%C3%B3n%20experimental.md)
 - Documentación compilada
-- Correo
+-  <a href="mailto:eiderdiazm95@gmail.com"> Correo: </a>
 
 
 
