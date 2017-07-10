@@ -21,7 +21,7 @@ Este proyecto funciona con [Bluetooth Beacons BEEKS](https://github.com/EiderDia
 
 
 
-# : computer: Detailed usage e Información para el desarrollador
+# :computer: Detailed usage e Información para el desarrollador
 - modelos e interfaz
 Ejemplos
 - configuración
@@ -32,7 +32,7 @@ Ejemplos
 - Limitaciones y problemas conocidos
 - rendimiento y evaluación comparativa  
 
-# : closed_book: Colofón
+# :closed_book: Colofón
 - Créditos - todos los que han contribuido código, bibliotecas de las que hemos prestado código.
 - Derechos de autor y licencia: especifique el tipo de licencia (normalmente "Apache 2.0" o "Todos los derechos reservados y confidenciales") y consulte el archivo LICENSE.md. No pegue el contenido de la licencia aquí.
 - Cómo contribuir
