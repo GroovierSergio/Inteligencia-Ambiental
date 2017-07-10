@@ -1,9 +1,9 @@
-<<H1 align = "center">
+<H1 align = "center">
   : Alfiler: Inteligencia medioambiental: alfiler:
   <a href="#">
   </a>
 
-</ H1>
+</H1>
 
 Este trabajo presenta la implementación de un sistema de inteligencia ambiental con el fin de obtener la localización de dispositivos inteligentes y, por lo tanto, de personas dentro de edificios, dejando la posibilidad de crear soluciones como mapas de orientación dentro de un edificio, entre otras soluciones. 
 
