@@ -4,8 +4,10 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
+import android.widget.Toast;
 
 /**
  * Created by Eider on 27/06/2017.
@@ -70,6 +72,23 @@ public class Scanner_BTLE {
                         mBluetoothAdapter.stopLeScan(mLeScanCallback);
                     }
                     ma.stopScan();
+                    /*sout sout sout
+                    Intent intent = new Intent(ma.getApplicationContext(), Canvas.class);
+                    String arreglo = "";
+                    for(int rows=0;rows<SinSuavizado.length;rows++){
+                        for(int columns=0;columns <SinSuavizado[rows].length;columns++){
+                            arreglo = arreglo +SinSuavizado[rows][columns];
+                            System.out.print(SinSuavizado[rows][columns] + "\t" );
+                        }
+
+                        System.out.println();
+                        arreglo = arreglo+ "\n";
+                    }
+                    intent.putExtra("ñose", "nose");
+                    Toast.makeText(ma.getApplicationContext(), arreglo, Toast.LENGTH_SHORT).show();
+                      ma.startActivity(intent);
+                    */
+
                 }
             }, scanPeriod);
 

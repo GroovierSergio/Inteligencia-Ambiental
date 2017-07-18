@@ -27,6 +27,14 @@
             android:text="guardar excel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+        <TextView
+            android:textSize="9dp"
+            android:id="@+id/errormessage"
+            android:layout_marginLeft="30dp"
+            android:text="que pedo que pex"
+            android:layout_width="130dp"
+            android:layout_height="130dp" />
     </LinearLayout>
 
 

@@ -25,6 +25,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -34,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.channels.FileChannel;
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -46,17 +48,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public static final int REQUEST_ENABLE_BT = 1;
         public static final int BTLE_SERVICES = 2;
 
-        private HashMap<String, BTLE_Device> mBTDevicesHashMap;
+        public HashMap<String, BTLE_Device> mBTDevicesHashMap;
         private ArrayList<BTLE_Device> mBTDevicesArrayList;
+
+    String  ArrayMacAddress[] = {"1","2", "3", "4", "5"};
+    String ArrayRSSI[] = {"-110","-110",  "-110","-110", "-110"};
         // you must change this mac addres array with your beacons mac adresses
         String[] MyBeaconsMac = {"F1:82:F5:F1:79:E8", "C0:62:E9:C5:37:F5", "F7:D4:CF:09:98:F0" ,"DD:BE:F9:A1:D8:99","D4:88:E6:45:E1:2B"};
-        private ListAdapter_BTLE_Devices adapter;
+   private final String[][] VectoresSuavizados = new String[][] {
+
+           {"-90,-88,-86,-90,-88" , "-90,-90,-90,-91,-90", "-85,-93,-96,-89,-88","-93,-104,-96,-81,-92"},
+           {"-90,-87,-91,-91,-87" ,"-91,-91,-90,-92,-88","-92,-92,-90,-92,-93","-91,-92,-90,-88,-88"},
+           {"-96,-93,-88,-92,-85","-94,-90,-89,-92,-84","-91,-92,-85,-91,-84","-100,-94,-89,-96,-87"},
+           {"-92,-86,-88,-92,-94","-90,-90,-88,-91,-87","-90,-92,-88,-91,-88","-93,-99,-81,-95,-89"}
+
+   };
+
+    private ListAdapter_BTLE_Devices adapter;
         private ListView listView;
-        private ImageView btn_Scan;
+        private TextView err;
+
         private BroadcastReceiver_BTState mBTStateUpdateReceiver;
         private Scanner_BTLE mBTLeScanner;
     private Button export;
         private FloatingActionButton bConsulta;
+    int Buttonflag = 0;
+
     EditText nombre,numero,correo;
 
     @Override
@@ -72,36 +89,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 exportDB();
             }
         });
-        //////////////////////////////////////////////////
-        /*peneson =(Button)findViewById(R.id.pene);
-        peneson.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AdminSQLiteHelper admin2 = new AdminSQLiteHelper(getApplicationContext(),"ble.db",null,1);
-                SQLiteDatabase db = admin2.getWritableDatabase();
-                Cursor fila = db.rawQuery("SELECT * FROM beacon ;",null);
-                if(fila.moveToFirst())
-                {
-                    Toast.makeText(getApplicationContext(),"Funciona",Toast.LENGTH_LONG).show();
-                }else
-                {
-                    Toast.makeText(getApplicationContext(),"No se encontro ningun dato",Toast.LENGTH_LONG).show();
-                }
-                db.close();
-            }
-        });
-
-        ////////////////////
-*/
-
 
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
             Utils.toast(getApplicationContext(), "BLE not supported");
             finish();
         }
-
         mBTStateUpdateReceiver = new BroadcastReceiver_BTState(getApplicationContext());
-        mBTLeScanner = new Scanner_BTLE(this, 20000, -95 );
+        mBTLeScanner = new Scanner_BTLE(this, 15000, -95 );
         mBTDevicesHashMap = new HashMap<>();
         mBTDevicesArrayList = new ArrayList<>();
 
@@ -110,20 +104,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         listView = new ListView(this);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
-
-       // btn_Scan = (ImageView) findViewById(R.id.btn_scan);
-
         ((ScrollView) findViewById(R.id.scrollView)).addView(listView);
-
-        //findViewById(R.id.btn_scan).setOnClickListener(this);
-
-
+        err = (TextView) findViewById(R.id.errormessage);
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Scanning Beacons ....", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Scanning Beacons ...", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                Buttonflag = 1;
+
                 //fab.setBackgroundTintList(ColorStateList.valueOf());
                 //   fab.setBackgroundColor(R.color.colorPrimaryDark);
                 if (!mBTLeScanner.isScanning()) {
@@ -211,43 +201,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 this.finish();
                 return true;
             case R.id.action_add:
-                String  ArrayMacAddress[] = {"1","2", "3", "4", "5"};
-                String ArrayRSSI[] = {"-110","-110",  "-110","-110", "-110"};
-                for(String key: mBTDevicesHashMap.keySet()) {
-                   // Toast.makeText(this, key + " : " + mBTDevicesHashMap.get(key).getRSSI(), Toast.LENGTH_SHORT).show()
-                    if (MyBeaconsMac[0].equals(key)) {
-                        ArrayMacAddress[0] = key;
-                        ArrayRSSI[0] = String.valueOf(mBTDevicesHashMap.get(key).getRSSI());
-                    }
-                    if (MyBeaconsMac[1].equals(key)) {
-                        ArrayMacAddress[1] = key;
-                        ArrayRSSI[1] = String.valueOf(mBTDevicesHashMap.get(key).getRSSI());
-                    }
-                    if (MyBeaconsMac[2].equals(key)) {
-                        ArrayMacAddress[2] = key;
-                        ArrayRSSI[2] = String.valueOf(mBTDevicesHashMap.get(key).getRSSI());
-                    }
-                    if (MyBeaconsMac[3].equals(key)) {
-                        ArrayMacAddress[3] = key;
-                        ArrayRSSI[3] = String.valueOf(mBTDevicesHashMap.get(key).getRSSI());
-                    }
-                    if (MyBeaconsMac[4].equals(key)) {
-                        ArrayMacAddress[4] = key;
-                        ArrayRSSI[4] = String.valueOf(mBTDevicesHashMap.get(key).getRSSI());
-                    }
 
-                }
-                for (int i = 0; i < MyBeaconsMac.length; i++) {
-                    if (ArrayMacAddress[i].equals(String.valueOf(i+1))) {
-                        ArrayMacAddress[i]=MyBeaconsMac[i];
-                        //Toast.makeText(this,":::::ENTRO::::"+ArrayMacAddress[i]+"::::RSSI:::"+ArrayRSSI[i], Toast.LENGTH_SHORT).show();
-                    }
-                    else {}//Toast.makeText(this,":::::NO   ENTRO::::"+ArrayMacAddress[i]+"::::RSSI:::"+ArrayRSSI[i]   , Toast.LENGTH_SHORT).show();
 
-                }
-
-                    //You can remove elements while iterating.
-
+                    //You can remove elements while iterating
                     //TODO agregar sentencias correctas de sqlit
                insertInSQLite(ArrayMacAddress[0],ArrayRSSI[0],
                        ArrayMacAddress[1],ArrayRSSI[1],
@@ -256,30 +212,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                        ArrayMacAddress[4],ArrayRSSI[4]);
                 Toast.makeText(this, "Data insert succesfuly", Toast.LENGTH_SHORT).show();
 
-
-               /*   AdminSQLiteHelper admin = new AdminSQLiteHelper(this,"ble.db",null,1);
-                SQLiteDatabase db = admin.getWritableDatabase();
-
-                adminDB.insert(db,ArrayMacAddress[0],ArrayRSSI[0],
-                             ArrayMacAddress[1],ArrayRSSI[1],
-                             ArrayMacAddress[2],ArrayRSSI[2],
-                             ArrayMacAddress[3],ArrayRSSI[3],
-                             ArrayMacAddress[4],ArrayRSSI[4]);
-
-                ContentValues registro = new ContentValues();
-                registro.put("address1",ArrayMacAddress[0]);
-                registro.put("rssi1",ArrayRSSI[0]);
-                registro.put("address2",ArrayMacAddress[1]);
-                registro.put("rssi2",ArrayRSSI[1]);
-                registro.put("address3",ArrayMacAddress[2]);
-                registro.put("rssi3",ArrayRSSI[2]);
-                registro.put("address4",ArrayMacAddress[3]);
-                registro.put("rssi4",ArrayRSSI[3]);
-                registro.put("address5",ArrayMacAddress[4]);
-                registro.put("rssi5",ArrayRSSI[4]);
-                db.insert("beacon",null,registro);
-                    db.close();
-                      */
                     //TODO HASTA AQUIIIIIIIIIII!!
                 return true;
 
@@ -315,17 +247,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Context context = view.getContext();
-//        Utils.toast(context, "List Item clicked");
+       /* Context context = view.getContext();
+       Utils.toast(context, "List Item clicked");
         // do something with the text views and start the next activity.
         stopScan();
         String name = mBTDevicesArrayList.get(position).getName();
         String address = mBTDevicesArrayList.get(position).getAddress();
-
-//        Intent intent = new Intent(this, Activity_BTLE_Services.class);
-  //      intent.putExtra(Activity_BTLE_Services.EXTRA_NAME, name);
-    //    intent.putExtra(Activity_BTLE_Services.EXTRA_ADDRESS, address);
-      //  startActivityForResult(intent, BTLE_SERVICES);
+*/
 
     }
 
@@ -353,8 +281,125 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mBTDevicesHashMap.clear();
         mBTLeScanner.start();
     }
+
     public void stopScan() {
         mBTLeScanner.stop();
+
+        //TODO: vaciar el hashmap a un vector 
+        if (Buttonflag != 0) {
+
+            try {
+                for (String key : mBTDevicesHashMap.keySet()) {
+                    //   Toast.makeText(this, key + " : " + mBTDevicesHashMap.get(key).getRSSI(), Toast.LENGTH_LONG).show();
+                    if (MyBeaconsMac[0].equals(key)) {
+                        ArrayMacAddress[0] = key;
+                        ArrayRSSI[0] = String.valueOf(mBTDevicesHashMap.get(key).getRSSI());
+                    }
+                    if (MyBeaconsMac[1].equals(key)) {
+                        ArrayMacAddress[1] = key;
+                        ArrayRSSI[1] = String.valueOf(mBTDevicesHashMap.get(key).getRSSI());
+                    }
+                    if (MyBeaconsMac[2].equals(key)) {
+                        ArrayMacAddress[2] = key;
+                        ArrayRSSI[2] = String.valueOf(mBTDevicesHashMap.get(key).getRSSI());
+                    }
+                    if (MyBeaconsMac[3].equals(key)) {
+                        ArrayMacAddress[3] = key;
+                        ArrayRSSI[3] = String.valueOf(mBTDevicesHashMap.get(key).getRSSI());
+                    }
+                    if (MyBeaconsMac[4].equals(key)) {
+                        ArrayMacAddress[4] = key;
+                        ArrayRSSI[4] = String.valueOf(mBTDevicesHashMap.get(key).getRSSI());
+                    }
+
+                }
+                //ya se ordeno el vector  ^
+                
+                for (int i = 0; i < MyBeaconsMac.length; i++) {
+                    if (ArrayMacAddress[i].equals(String.valueOf(i + 1))) {
+                        ArrayMacAddress[i] = MyBeaconsMac[i];
+                    }
+                }
+                
+            } catch (Exception e) {
+                Toast.makeText(this, "error men: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                //err.setText(" error men: " + e.getMessage());
+            }
+            
+            //TODO: comparar el vector de arriba con la matriz estatica
+            
+            try {
+                ArrayList<String> ArraySimilares = new ArrayList<>();
+                int MayorIndiceComparacion = 0;
+                for (int rows = 0; rows < VectoresSuavizados.length; rows++) {
+                    for (int columns = 0; columns < VectoresSuavizados[rows].length; columns++) {
+                       //de la mitad de la matriz en adelante
+                        //TODO: aqui spliteo el el vector en atenuaciones para compararlos
+                        String[] StaticVector = VectoresSuavizados[rows][columns].split(",");
+
+                        int comparacion = 0;
+                        for (int i = 0; i < 5; i++) {
+                            if (StaticVector[i].equals(ArrayRSSI[i])) {
+                                comparacion++;
+                            }
+
+                            int intvectorplus = Integer.valueOf(ArrayRSSI[i])+1 ;
+                            int intvectorminus = Integer.valueOf(ArrayRSSI[i])-1 ;
+
+                            if(Integer.valueOf(StaticVector[i]) == intvectorplus ||
+                                    Integer.valueOf(StaticVector[i]) == intvectorminus  ){
+                                comparacion++;
+                            }
+
+                            if (comparacion == 5  ) {
+                            }
+                            if(comparacion==4){
+                                err.setText(Arrays.asList(StaticVector).toString());
+                            }
+                            if (comparacion == 2){
+                                //Toast.makeText(this,"["+rows+"]"+"["+columns+"] :::"+ StaticVector[i]+" : "+ArrayRSSI[i]+" :: "+comparacion, Toast.LENGTH_SHORT).show();
+                                err.setText(Arrays.asList(StaticVector).toString());
+                            }
+
+                        }
+
+                        //TODO : Aqui comparar cual se parece mas, guardar el vector y el numero de indices parecidos
+                        if (comparacion > MayorIndiceComparacion) {
+                            ArraySimilares.clear();
+                            MayorIndiceComparacion = comparacion;
+                            ArraySimilares.add(Arrays.asList(StaticVector).toString());
+                        }
+                        if (comparacion == MayorIndiceComparacion) {
+                            ArraySimilares.add(Arrays.asList(StaticVector).toString());
+                        }
+
+                    }
+                }
+                String similares = "";
+                for(String elemento : ArraySimilares){
+                    similares+= elemento +"\n";
+                }
+                err.setText(similares);
+                //TODO: aqui imprimir el arreglo de los que mas se parecen
+               /* for (int i = 0; i < ArraySimilares.length; i++) {
+                    Toast.makeText(this, Arrays.toString(Arrays.asList(ArraySimilares).get(i)), Toast.LENGTH_SHORT).show();
+                }*/
+                //TODO : aqui mando el arreglo de los que mas se parecen
+               // Intent intent = new Intent(getApplicationContext(), Canvas.class);
+                //intent.putExtra("ñose", "nose");
+                //        startActivity(intent);
+
+            }
+            catch (Exception e) {
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                err.setText("error prro"+e.getMessage());
+            }
+
+
+    }
+
+        Buttonflag=0;
+        //err.setText("ya se acabo el pex pushale de nuevo -->");
     }
 
     public void insertInSQLite(String maddress1, String rss1,
@@ -399,6 +444,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
        }
 }
+
+
 
 }
 
