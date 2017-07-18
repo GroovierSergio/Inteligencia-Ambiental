@@ -57,10 +57,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String[] MyBeaconsMac = {"F1:82:F5:F1:79:E8", "C0:62:E9:C5:37:F5", "F7:D4:CF:09:98:F0" ,"DD:BE:F9:A1:D8:99","D4:88:E6:45:E1:2B"};
    private final String[][] VectoresSuavizados = new String[][] {
 
-           {"-90,-88,-86,-90,-88" , "-90,-90,-90,-91,-90", "-85,-93,-96,-89,-88","-93,-104,-96,-81,-92"},
-           {"-90,-87,-91,-91,-87" ,"-91,-91,-90,-92,-88","-92,-92,-90,-92,-93","-91,-92,-90,-88,-88"},
-           {"-96,-93,-88,-92,-85","-94,-90,-89,-92,-84","-91,-92,-85,-91,-84","-100,-94,-89,-96,-87"},
-           {"-92,-86,-88,-92,-94","-90,-90,-88,-91,-87","-90,-92,-88,-91,-88","-93,-99,-81,-95,-89"}
+           /*[1]*/      {"-81,-90,-95,-93,-85" , "-92,-92,-93,-99,-88", "-92,-91,-89,-91,-90","-88,-88,-96,-99,-91"
+           /*[1]*/           ,"-90,-92,-96,-92,-91","-91,-90,-92,-89,-92","-90,-89,-92,-86,-91","-89,-91,-89,-82,-92"},
+           /*[2]*/     {"-89,-90,-91,-89,-90" ,"-90,-89,-92,-91,-93","-93,-91,-91,-89,-85","-87,-91,-91,-88,-85"
+           /*[2]*/     ,"-90,-90,-91,-88,-88","-91,-96,-91,-91,-88","-93,-92,-91,-91,-91","-92,-90,-93,-90,-92"},
+           /*[3]*/   {"-87,-87,-91,-91,-89","-87,-91,-93,-93,-88","-91,-92,-88,-91,-85","-90,-91,-93,-91,-81"
+           /*[3]*/      ,"-89,-89,-91,-91,-87","-92,-95,-91,-83,-95","-96,-96,-92,-84,-91","-91,-94,-92,-87,-95"},
+           /*[4]*/    {"-88,-88,-89,-92,-87","-90,-87,-87,-89,-85","-90,-92,-88,-92,-83","-91,-91,-93,-88,-85"
+           /*[4]*/    ,"-90,-94,-92,-100,-88","-90,-93,-91,-92,-87","-95,-95,-91,-86,-90","-92,-92,-90,-86,-86"},
+            /*[5]*/  {"-92,-87,-91,-92,-91","-92,-92,-90,-92,-90","-93,-87,-90,-91,-89","-91,-89,-90,-94,-83"
+            /*[6]*/   ,"-92,-90,-92,-93,-82","-93,-91,-89,-93,-92","-92,-90,-91,-93,-91","-93,-96,-91,-92,-90"},
+            /*[6]*/  {"-92,-90,-90,-93,-91","-91,-86,-88,-92,-87","-92,-89,-92,-89,-89","-91,-90,-89,-90,-92"
+            /*[6]*/     ,"-92,-93,-87,-91,-93","-95,-90,-91,-92,-91","-93,-92,-88,-93,-90","-94,-92,-88,-93,-88"},
+            /*[7]*/  {"-93,-86,-93,-92,-89","-91,-90,-92,-92,-87","-92,-88,-91,-93,-90","-92,-91,-90,-91,-93"
+            /*[7]*/   ,"-92,-91,-84,-93,-93","-90,-89,-88,-91,-93","-93,-90,-83,-99,-92","-93,-93,-84,-91,-92"},
+            /*[8]*/  {"-96,-82,-89,-92,-91","-93,-83,-89,-93,-92","-91,-88,-87,-88,-89","-96,-93,-86,-92,-89"
+            /*[8]*/  ,"-91,-91,-83,-92,-91","-93,-91,-79,-91,-88","-91,-93,-83,-92,-90","-97,-94,-81,-91,-89"}
+
 
    };
 
@@ -313,8 +326,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
 
                 }
-                //ya se ordeno el vector  ^
-                
                 for (int i = 0; i < MyBeaconsMac.length; i++) {
                     if (ArrayMacAddress[i].equals(String.valueOf(i + 1))) {
                         ArrayMacAddress[i] = MyBeaconsMac[i];
@@ -323,7 +334,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 
             } catch (Exception e) {
                 Toast.makeText(this, "error men: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                //err.setText(" error men: " + e.getMessage());
             }
             
             //TODO: comparar el vector de arriba con la matriz estatica
@@ -336,7 +346,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                        //de la mitad de la matriz en adelante
                         //TODO: aqui spliteo el el vector en atenuaciones para compararlos
                         String[] StaticVector = VectoresSuavizados[rows][columns].split(",");
-
                         int comparacion = 0;
                         for (int i = 0; i < 5; i++) {
                             if (StaticVector[i].equals(ArrayRSSI[i])) {
@@ -351,14 +360,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 comparacion++;
                             }
 
-                            if (comparacion == 5  ) {
-                            }
-                            if(comparacion==4){
-                                err.setText(Arrays.asList(StaticVector).toString());
-                            }
-                            if (comparacion == 2){
+                            if (comparacion > 2){
                                 //Toast.makeText(this,"["+rows+"]"+"["+columns+"] :::"+ StaticVector[i]+" : "+ArrayRSSI[i]+" :: "+comparacion, Toast.LENGTH_SHORT).show();
-                                err.setText(Arrays.asList(StaticVector).toString());
                             }
 
                         }
@@ -370,9 +373,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             ArraySimilares.add(Arrays.asList(StaticVector).toString());
                         }
                         if (comparacion == MayorIndiceComparacion) {
-                            ArraySimilares.add(Arrays.asList(StaticVector).toString());
+                            if(ArraySimilares.contains(Arrays.asList(StaticVector).toString())){
+                                Toast.makeText(this, "arrayrepetido", Toast.LENGTH_SHORT).show();
+                            }else {
+                                ArraySimilares.add(Arrays.asList(StaticVector).toString());
+                            }
                         }
-
                     }
                 }
                 String similares = "";
@@ -380,10 +386,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     similares+= elemento +"\n";
                 }
                 err.setText(similares);
-                //TODO: aqui imprimir el arreglo de los que mas se parecen
-               /* for (int i = 0; i < ArraySimilares.length; i++) {
-                    Toast.makeText(this, Arrays.toString(Arrays.asList(ArraySimilares).get(i)), Toast.LENGTH_SHORT).show();
-                }*/
+
                 //TODO : aqui mando el arreglo de los que mas se parecen
                // Intent intent = new Intent(getApplicationContext(), Canvas.class);
                 //intent.putExtra("ñose", "nose");
