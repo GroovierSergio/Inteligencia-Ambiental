@@ -55,16 +55,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String ArrayRSSI[] = {"-110","-110",  "-110","-110", "-110"};
         // you must change this mac addres array with your beacons mac adresses
         String[] MyBeaconsMac = {"F1:82:F5:F1:79:E8", "C0:62:E9:C5:37:F5", "F7:D4:CF:09:98:F0" ,"DD:BE:F9:A1:D8:99","D4:88:E6:45:E1:2B"};
-   private final String[][] VectoresSuavizados = new String[][] {
+   private final String[][] MatrizRestaCuadratica = new String[][] {
 
-           /*[1]*/      {"-81,-90,-95,-93,-85" , "-92,-92,-93,-99,-88", "-92,-91,-89,-91,-90","-88,-88,-96,-99,-91"
-           /*[1]*/           ,"-90,-92,-96,-92,-91","-91,-90,-92,-89,-92","-90,-89,-92,-86,-91","-89,-91,-89,-82,-92"},
-           /*[2]*/     {"-89,-90,-91,-89,-90" ,"-90,-89,-92,-91,-93","-93,-91,-91,-89,-85","-87,-91,-91,-88,-85"
-           /*[2]*/     ,"-90,-90,-91,-88,-88","-91,-96,-91,-91,-88","-93,-92,-91,-91,-91","-92,-90,-93,-90,-92"},
-           /*[3]*/   {"-87,-87,-91,-91,-89","-87,-91,-93,-93,-88","-91,-92,-88,-91,-85","-90,-91,-93,-91,-81"
-           /*[3]*/      ,"-89,-89,-91,-91,-87","-92,-95,-91,-83,-95","-96,-96,-92,-84,-91","-91,-94,-92,-87,-95"},
-           /*[4]*/    {"-88,-88,-89,-92,-87","-90,-87,-87,-89,-85","-90,-92,-88,-92,-83","-91,-91,-93,-88,-85"
-           /*[4]*/    ,"-90,-94,-92,-100,-88","-90,-93,-91,-92,-87","-95,-95,-91,-86,-90","-92,-92,-90,-86,-86"},
+           /*[1]*/      {"229.68", "63.8", "34.24","138.88","148.36","360.72","28.48","16.72"},
+           /*[2]*/     {"26.6","264.96","55.12","546.36","29.92","181.04","61.88","213.36"},
+           /*[3]*/   {"26.2","32.6","73.52","57.92","20","115.16","138.36","81.56"},
+           /*[4]*/    {"365.2","59.84","149.36","83.96","558.4","79.6","47.12","405.76"},
+            /*[5]*/  {"61.32","183.24","60.72","99.04","169.52","450.2","16.2","76.28"},
+            /*[6]*/  {"452.92","58.6","178.96","56.36","59.92","61.4","428.6","308.12"},
+            /*[7]*/  {"62.24","91.76","33.72","43.76","355.48","88.96","186","338.96"},
+            /*[8]*/  {"167.16","134.36","37","42.64","60","28.12","80.44","50.96"}
+
+
+   };
+
+    private final String[][] VectoresPromediados = new String[][] {
+
+            /*[1]*/      {"-81,-90,-95,-93,-85" , "-92,-92,-93,-99,-88", "-92,-91,-89,-91,-90","-88,-88,-96,-99,-91"
+            /*[1]*/           ,"-90,-92,-96,-92,-91","-91,-90,-92,-89,-92","-90,-89,-92,-86,-91","-89,-91,-89,-82,-92"},
+            /*[2]*/     {"-89,-90,-91,-89,-90" ,"-90,-89,-92,-91,-93","-93,-91,-91,-89,-85","-87,-91,-91,-88,-85"
+            /*[2]*/     ,"-90,-90,-91,-88,-88","-91,-96,-91,-91,-88","-93,-92,-91,-91,-91","-92,-90,-93,-90,-92"},
+            /*[3]*/   {"-87,-87,-91,-91,-89","-87,-91,-93,-93,-88","-91,-92,-88,-91,-85","-90,-91,-93,-91,-81"
+            /*[3]*/      ,"-89,-89,-91,-91,-87","-92,-95,-91,-83,-95","-96,-96,-92,-84,-91","-91,-94,-92,-87,-95"},
+            /*[4]*/    {"-88,-88,-89,-92,-87","-90,-87,-87,-89,-85","-90,-92,-88,-92,-83","-91,-91,-93,-88,-85"
+            /*[4]*/    ,"-90,-94,-92,-100,-88","-90,-93,-91,-92,-87","-95,-95,-91,-86,-90","-92,-92,-90,-86,-86"},
             /*[5]*/  {"-92,-87,-91,-92,-91","-92,-92,-90,-92,-90","-93,-87,-90,-91,-89","-91,-89,-90,-94,-83"
             /*[6]*/   ,"-92,-90,-92,-93,-82","-93,-91,-89,-93,-92","-92,-90,-91,-93,-91","-93,-96,-91,-92,-90"},
             /*[6]*/  {"-92,-90,-90,-93,-91","-91,-86,-88,-92,-87","-92,-89,-92,-89,-89","-91,-90,-89,-90,-92"
@@ -74,8 +88,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             /*[8]*/  {"-96,-82,-89,-92,-91","-93,-83,-89,-93,-92","-91,-88,-87,-88,-89","-96,-93,-86,-92,-89"
             /*[8]*/  ,"-91,-91,-83,-92,-91","-93,-91,-79,-91,-88","-91,-93,-83,-92,-90","-97,-94,-81,-91,-89"}
 
-
-   };
+    };
 
     private ListAdapter_BTLE_Devices adapter;
         private ListView listView;
@@ -118,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
         ((ScrollView) findViewById(R.id.scrollView)).addView(listView);
-        err = (TextView) findViewById(R.id.errormessage);
+        err = (EditText) findViewById(R.id.errormessage);
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -331,66 +344,54 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         ArrayMacAddress[i] = MyBeaconsMac[i];
                     }
                 }
-                
+
             } catch (Exception e) {
                 Toast.makeText(this, "error men: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
-            
-            //TODO: comparar el vector de arriba con la matriz estatica
-            
+
+
+
             try {
                 ArrayList<String> ArraySimilares = new ArrayList<>();
-                int MayorIndiceComparacion = 0;
-                for (int rows = 0; rows < VectoresSuavizados.length; rows++) {
-                    for (int columns = 0; columns < VectoresSuavizados[rows].length; columns++) {
+                int contador=0;
+             //   ArraySimilares.add("Resultante:"+Arrays.asList(ArrayRSSI).toString()+"\n"+"similares:");
+                for (int rows = 0; rows < MatrizRestaCuadratica.length; rows++) {
+                    for (int columns = 0; columns < MatrizRestaCuadratica[rows].length; columns++) {
                        //de la mitad de la matriz en adelante
-                        //TODO: aqui spliteo el el vector en atenuaciones para compararlos
-                        String[] StaticVector = VectoresSuavizados[rows][columns].split(",");
-                        int comparacion = 0;
+                        String[] StaticVector = VectoresPromediados[rows][columns].split(",");
+                        //TODO: aqui hago el calculo de la resta cuadratica
+                          Double ResultadoRestaCuadratica =  0.0;
                         for (int i = 0; i < 5; i++) {
-                            if (StaticVector[i].equals(ArrayRSSI[i])) {
-                                comparacion++;
-                            }
-
-                            int intvectorplus = Integer.valueOf(ArrayRSSI[i])+1 ;
-                            int intvectorminus = Integer.valueOf(ArrayRSSI[i])-1 ;
-
-                            if(Integer.valueOf(StaticVector[i]) == intvectorplus ||
-                                    Integer.valueOf(StaticVector[i]) == intvectorminus  ){
-                                comparacion++;
-                            }
-
-                            if (comparacion > 2){
-                                //Toast.makeText(this,"["+rows+"]"+"["+columns+"] :::"+ StaticVector[i]+" : "+ArrayRSSI[i]+" :: "+comparacion, Toast.LENGTH_SHORT).show();
-                            }
-
+                           Double res = 0.0;
+                           res = Double.valueOf(StaticVector[i]) - Double.valueOf(ArrayRSSI[i]);
+                           ResultadoRestaCuadratica += Math.pow(res,2);
                         }
 
-                        //TODO : Aqui comparar cual se parece mas, guardar el vector y el numero de indices parecidos
-                        if (comparacion > MayorIndiceComparacion) {
-                            ArraySimilares.clear();
-                            MayorIndiceComparacion = comparacion;
-                            ArraySimilares.add(Arrays.asList(StaticVector).toString());
+                        ArraySimilares.add("R:"+ResultadoRestaCuadratica.toString());
+                        contador++;
+                        if(contador==8){
+                            ArraySimilares.add("\n");
+                            contador=0;
                         }
-                        if (comparacion == MayorIndiceComparacion) {
-                            if(ArraySimilares.contains(Arrays.asList(StaticVector).toString())){
-                                Toast.makeText(this, "arrayrepetido", Toast.LENGTH_SHORT).show();
-                            }else {
-                                ArraySimilares.add(Arrays.asList(StaticVector).toString());
+
+                        //Toast.makeText(this, "resultado resta cuadratica: "+ ResultadoRestaCuadratica.toString(), Toast.LENGTH_SHORT).show();
+                          // TODO: 19/07/2017 aqui hacer la comparacion +- 1 contra cada elemento de la matrizRestaCuadratica
+                        //// TODO: 19/07/2017 se hara una brecha mas grande los datos generados no son parecidos  
+                           Double StaticRestaCuadratica = Double.valueOf(MatrizRestaCuadratica[rows][columns]);
+                           Double umbralSuperior = ResultadoRestaCuadratica+1 ;
+                           Double umbralInferior = ResultadoRestaCuadratica-1 ;
+                            if(StaticRestaCuadratica <= umbralSuperior  && StaticRestaCuadratica >= umbralInferior){
+                                ArraySimilares.add("/s/"+StaticRestaCuadratica.toString());
                             }
-                        }
-                    }
-                }
+
+                        } // end innner loop
+                        } // end upper loop
                 String similares = "";
                 for(String elemento : ArraySimilares){
                     similares+= elemento +"\n";
                 }
                 err.setText(similares);
 
-                //TODO : aqui mando el arreglo de los que mas se parecen
-               // Intent intent = new Intent(getApplicationContext(), Canvas.class);
-                //intent.putExtra("ñose", "nose");
-                //        startActivity(intent);
 
             }
             catch (Exception e) {
