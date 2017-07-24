@@ -25,10 +25,11 @@
         android:weightSum="1">
 
         <Button
+
+            android:background="@drawable/copy"
             android:id="@+id/exportar"
-            android:text="guardar excel"
-            android:layout_width="64dp"
-            android:layout_height="wrap_content" />
+            android:layout_width="42dp"
+            android:layout_height="57dp" />
 
         <EditText
             android:editable="false"
@@ -36,9 +37,18 @@
             android:id="@+id/errormessage"
             android:layout_marginLeft="30dp"
             android:text="que pedo que pex"
-            android:layout_width="230dp"
-            android:layout_height="230dp"
-            android:layout_weight="2.68" />
+            android:layout_width="92dp"
+            android:layout_height="230dp" />
+
+        <EditText
+            android:background="@color/Clouds"
+            android:editable="false"
+            android:textSize="9dp"
+            android:id="@+id/suavizado"
+            android:layout_marginLeft="30dp"
+            android:text="que pedo que pex"
+            android:layout_width="92dp"
+            android:layout_height="230dp" />
     </LinearLayout>
 
 
