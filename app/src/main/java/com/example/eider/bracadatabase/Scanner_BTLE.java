@@ -47,6 +47,7 @@ public class Scanner_BTLE {
             ma.stopScan();
         }
         else {
+
             scanLeDevice(true);
         }
     }
@@ -72,22 +73,6 @@ public class Scanner_BTLE {
                         mBluetoothAdapter.stopLeScan(mLeScanCallback);
                     }
                     ma.stopScan();
-                    /*sout sout sout
-                    Intent intent = new Intent(ma.getApplicationContext(), Canvas.class);
-                    String arreglo = "";
-                    for(int rows=0;rows<SinSuavizado.length;rows++){
-                        for(int columns=0;columns <SinSuavizado[rows].length;columns++){
-                            arreglo = arreglo +SinSuavizado[rows][columns];
-                            System.out.print(SinSuavizado[rows][columns] + "\t" );
-                        }
-
-                        System.out.println();
-                        arreglo = arreglo+ "\n";
-                    }
-                    intent.putExtra("ñose", "nose");
-                    Toast.makeText(ma.getApplicationContext(), arreglo, Toast.LENGTH_SHORT).show();
-                      ma.startActivity(intent);
-                    */
 
                 }
             }, scanPeriod);

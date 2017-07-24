@@ -1,15 +1,18 @@
 package com.example.eider.bracadatabase;
 
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
@@ -23,6 +26,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -47,9 +51,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         public static final int REQUEST_ENABLE_BT = 1;
         public static final int BTLE_SERVICES = 2;
+        public int Iteracion = 0;
+        public HashMap<String,BTLE_Device> mBTDevicesHashMap;
+    public HashMap<String,String> CalibracionHashMap;
 
-        public HashMap<String, BTLE_Device> mBTDevicesHashMap;
-        private ArrayList<BTLE_Device> mBTDevicesArrayList;
+    private ArrayList<BTLE_Device> mBTDevicesArrayList;
 
     String  ArrayMacAddress[] = {"1","2", "3", "4", "5"};
     String ArrayRSSI[] = {"-110","-110",  "-110","-110", "-110"};
@@ -57,14 +63,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String[] MyBeaconsMac = {"F1:82:F5:F1:79:E8", "C0:62:E9:C5:37:F5", "F7:D4:CF:09:98:F0" ,"DD:BE:F9:A1:D8:99","D4:88:E6:45:E1:2B"};
    private final String[][] MatrizRestaCuadratica = new String[][] {
 
-           /*[1]*/      {"229.68", "63.8", "34.24","138.88","148.36","360.72","28.48","16.72"},
-           /*[2]*/     {"26.6","264.96","55.12","546.36","29.92","181.04","61.88","213.36"},
-           /*[3]*/   {"26.2","32.6","73.52","57.92","20","115.16","138.36","81.56"},
-           /*[4]*/    {"365.2","59.84","149.36","83.96","558.4","79.6","47.12","405.76"},
-            /*[5]*/  {"61.32","183.24","60.72","99.04","169.52","450.2","16.2","76.28"},
-            /*[6]*/  {"452.92","58.6","178.96","56.36","59.92","61.4","428.6","308.12"},
-            /*[7]*/  {"62.24","91.76","33.72","43.76","355.48","88.96","186","338.96"},
-            /*[8]*/  {"167.16","134.36","37","42.64","60","28.12","80.44","50.96"}
+           /*[1]*/      {"[1,1]:229.68", "[1,2]:63.8", "[1,3]:34.24","[1,4]:138.88","[1,5]:148.36","[1,6]:360.72","[1,7]:28.48","[1,8]:16.72"},
+           /*[2]*/     {"[2,1]:26.6","[2,2]:264.96","[2,3]:55.12","[2,4]:546.36","[2,5]:29.92","[2,6]:181.04","[2,7]:61.88","[2,8]:213.36"},
+           /*[3]*/   {"[3,1]:26.2","[3,2]:32.6","[3,3]:73.52","[3,4]:57.92","[3,5]:20","[3,6]:115.16","[3,7]:138.36","[3,8]:81.56"},
+           /*[4]*/    {"[4,1]:365.2","[4,2]:59.84","[4,3]:149.36","[4,4]:83.96","[4,5]:558.4","[4,6]:79.6","[4,7]:47.12","[4,8]:405.76"},
+            /*[5]*/  {"[5,1]:61.32","[5,2]:183.24","[5,3]:60.72","[5,4]:99.04","[5,5]:169.52","[5,6]:450.2","[5,7]:16.2","[5,8]:76.28"},
+            /*[6]*/  {"[6,1]:452.92","[6,2]:58.6","[6,3]:178.96","[6,4]:56.36","[6,5]:59.92","[6,6]:61.4","[6,7]:428.6","[6,8]:308.12"},
+            /*[7]*/  {"[7,1]:62.24","[7,2]:91.76","[7,3]:33.72","[7,4]:43.76","[7,5]:355.48","[7,6]:88.96","[7,7]:186","[7,8]:338.96"},
+            /*[8]*/  {"[8,1]:167.16","[8,2]:134.36","[8,3]:37","[8,4]:42.64","[8,5]:60","[8,6]:28.12","[8,7]:80.44","[8,8]:50.96"}
 
 
    };
@@ -97,7 +103,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         private BroadcastReceiver_BTState mBTStateUpdateReceiver;
         private Scanner_BTLE mBTLeScanner;
     private Button export;
-        private FloatingActionButton bConsulta;
+    private LinearLayout background ;
+    FloatingActionButton fab;
     int Buttonflag = 0;
 
     EditText nombre,numero,correo;
@@ -121,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             finish();
         }
         mBTStateUpdateReceiver = new BroadcastReceiver_BTState(getApplicationContext());
-        mBTLeScanner = new Scanner_BTLE(this, 15000, -95 );
+        mBTLeScanner = new Scanner_BTLE(this, 20000, -95 );
         mBTDevicesHashMap = new HashMap<>();
         mBTDevicesArrayList = new ArrayList<>();
 
@@ -132,7 +139,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         listView.setOnItemClickListener(this);
         ((ScrollView) findViewById(R.id.scrollView)).addView(listView);
         err = (EditText) findViewById(R.id.errormessage);
-        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+         fab = (FloatingActionButton) findViewById(R.id.fab);
+        background = (LinearLayout) findViewById(R.id.backgr);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -144,12 +152,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //   fab.setBackgroundColor(R.color.colorPrimaryDark);
                 if (!mBTLeScanner.isScanning()) {
                     startScan();
-                    fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.Alizarin)));
+                 //   background.setBackgroundColor(getResources().getColor(R.color.Sunflower));
+
 
                 }
                 else {
                     stopScan();
                     fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.Emerald)));
+
 
                 }
             }
@@ -227,8 +237,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 this.finish();
                 return true;
             case R.id.action_add:
-
-
                     //You can remove elements while iterating
                     //TODO agregar sentencias correctas de sqlit
                insertInSQLite(ArrayMacAddress[0],ArrayRSSI[0],
@@ -260,9 +268,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                Utils.toast(getApplicationContext(), "Scan Button Pressed");
                 if (!mBTLeScanner.isScanning()) {
                     startScan();
+
+
                 }
                 else {
                     stopScan();
+                    fab.setBackgroundTintList(new ColorStateList(new int[][]
+                            {new int[]{0}}, new int[]{getResources().getColor(R.color.Emerald)}));
+
                 }
 
                 break;
@@ -311,6 +324,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void stopScan() {
         mBTLeScanner.stop();
 
+
         //TODO: vaciar el hashmap a un vector 
         if (Buttonflag != 0) {
 
@@ -349,56 +363,81 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(this, "error men: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
+//deaqui
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+            builder1.setMessage("Write your message here.");
+            builder1.setCancelable(true);
 
+            builder1.setPositiveButton(
+                    "Yes",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            ArrayList<String> ArraySimilares = new ArrayList<>();
+                            int contador = 0;
+                            //   ArraySimilares.add("Resultante:"+Arrays.asList(ArrayRSSI).toString()+"\n"+"similares:");
+                            for (int rows = 0; rows < MatrizRestaCuadratica.length; rows++) {
+                                for (int columns = 0; columns < MatrizRestaCuadratica[rows].length; columns++) {
+                                    //de la mitad de la matriz en adelante
+                                    String[] StaticVector = VectoresPromediados[rows][columns].split(",");
+                                    //TODO: aqui hago el calculo de la resta cuadratica
+                                    Double ResultadoRestaCuadratica = 0.0;
+                                    for (int i = 0; i < 5; i++) {
+                                        Double res = 0.0;
+                                        res = Double.valueOf(StaticVector[i]) - Double.valueOf(ArrayRSSI[i]);
+                                        ResultadoRestaCuadratica += Math.pow(res, 2);
+                                    }
 
-            try {
-                ArrayList<String> ArraySimilares = new ArrayList<>();
-                int contador=0;
-             //   ArraySimilares.add("Resultante:"+Arrays.asList(ArrayRSSI).toString()+"\n"+"similares:");
-                for (int rows = 0; rows < MatrizRestaCuadratica.length; rows++) {
-                    for (int columns = 0; columns < MatrizRestaCuadratica[rows].length; columns++) {
-                       //de la mitad de la matriz en adelante
-                        String[] StaticVector = VectoresPromediados[rows][columns].split(",");
-                        //TODO: aqui hago el calculo de la resta cuadratica
-                          Double ResultadoRestaCuadratica =  0.0;
-                        for (int i = 0; i < 5; i++) {
-                           Double res = 0.0;
-                           res = Double.valueOf(StaticVector[i]) - Double.valueOf(ArrayRSSI[i]);
-                           ResultadoRestaCuadratica += Math.pow(res,2);
-                        }
+                                    //ArraySimilares.add("R:"+ResultadoRestaCuadratica.toString());
+                                    contador++;
+                                    if (contador == 8) {
+                                        //  ArraySimilares.add("\n");
+                                        contador = 0;
+                                    }
 
-                        ArraySimilares.add("R:"+ResultadoRestaCuadratica.toString());
-                        contador++;
-                        if(contador==8){
-                            ArraySimilares.add("\n");
-                            contador=0;
-                        }
+                                    //Toast.makeText(this, "resultado resta cuadratica: "+ ResultadoRestaCuadratica.toString(), Toast.LENGTH_SHORT).show();
+                                    // TODO: 19/07/2017 aqui hacer la comparacion +- 1 contra cada elemento de la matrizRestaCuadratica
+                                    //// TODO: 19/07/2017 se hara una brecha mas grande los datos generados no son parecidos
+                                    String[] splitvector = MatrizRestaCuadratica[rows][columns].split(":");
+                                    Double StaticRestaCuadratica = Double.valueOf(splitvector[1]);
+                                    String coordenada = splitvector[0];
+                                    Double umbralSuperior = ResultadoRestaCuadratica + 2;
+                                    Double umbralInferior = ResultadoRestaCuadratica - 2;
+                                    if (StaticRestaCuadratica <= umbralSuperior && StaticRestaCuadratica >= umbralInferior) {
+                                        ArraySimilares.add("/s/" + coordenada);
 
-                        //Toast.makeText(this, "resultado resta cuadratica: "+ ResultadoRestaCuadratica.toString(), Toast.LENGTH_SHORT).show();
-                          // TODO: 19/07/2017 aqui hacer la comparacion +- 1 contra cada elemento de la matrizRestaCuadratica
-                        //// TODO: 19/07/2017 se hara una brecha mas grande los datos generados no son parecidos  
-                           Double StaticRestaCuadratica = Double.valueOf(MatrizRestaCuadratica[rows][columns]);
-                           Double umbralSuperior = ResultadoRestaCuadratica+1 ;
-                           Double umbralInferior = ResultadoRestaCuadratica-1 ;
-                            if(StaticRestaCuadratica <= umbralSuperior  && StaticRestaCuadratica >= umbralInferior){
-                                ArraySimilares.add("/s/"+StaticRestaCuadratica.toString());
+                                    }
+
+                                } // end innner loop
+                            } // end upper loop
+                            String similares = "";
+                            try {
+                            for (String elemento : ArraySimilares) {
+                                //// TODO: 21/07/2017 falta guardar en el hashmap los valores de la calibracion para despues compararlos  
+                                if(CalibracionHashMap.containsKey(elemento)){
+                                    Integer.valueOf(CalibracionHashMap.get(elemento));
+                                }
+                                similares += elemento + "\n";
                             }
+                            err.setText(similares);
+                        }
+                            catch (Exception ex){
+                                Toast.makeText(MainActivity.this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        
+                        }
+                     
+                    });
 
-                        } // end innner loop
-                        } // end upper loop
-                String similares = "";
-                for(String elemento : ArraySimilares){
-                    similares+= elemento +"\n";
-                }
-                err.setText(similares);
+            builder1.setNegativeButton(
+                    "No",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
 
-
-            }
-            catch (Exception e) {
-                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                err.setText("error prro"+e.getMessage());
-            }
-
+            AlertDialog alert11 = builder1.create();
+            alert11.show();
 
     }
 
