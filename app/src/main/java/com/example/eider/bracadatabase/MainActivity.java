@@ -42,6 +42,7 @@ import java.nio.channels.FileChannel;
 import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -71,10 +72,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
    };
     private final String[][] MatrizAtenuaciones = new String[][] {
 //// TODO: 24/07/2017 matriz de atenuaciones
-           /*[1]*/      {"-89,-85.6,-90.8,-90.8,-89.6","-90,-82.4,-93.4,-92.8,-88.8","-91.8,-89.8,-91.2,-88.2,-89.8","-89.8,-89,-92.8,-90,-93.2"},
-           /*[2]*/     {"-92.6,-82,-87.6,-92.8,-88.8","-92,-81.2,-88.4,-91.6,-89.4","-92.6,-90.6,-92.6,-93.4,-90.6","-90.6,-89.2,-89.6,-88.8,-91.8"},
-           /*[3]*/   {"-92.4,-85.4,-90.2,-92.2,-87.6","-92.4,-85.6,-92.6,-89.8,-88","-92,-85.2,-92.6,-90.6,-91.4","-91,-89,-89.4,-92.4,-85.2"},
-           /*[4]*/    {"-92.6,-81.8,-91.4,-92.8,-86.2","-93.8,-81.2,-89.8,-88.2,-89.8","-91.4,-88.2,-87,-92,-89.4","-92.4,-87.8,-85,-91.2,-90.8"}
+           /*[1]*/      {"[1,1]:-89,-85.6,-90.8,-90.8,-89.6","[1,2]:-90,-82.4,-93.4,-92.8,-88.8","[1,3]:-91.8,-89.8,-91.2,-88.2,-89.8","[1,4]:-89.8,-89,-92.8,-90,-93.2"},
+           /*[2]*/     {"[2,1]:-92.6,-82,-87.6,-92.8,-88.8","[2,1]:-92,-81.2,-88.4,-91.6,-89.4","[2,3]:-92.6,-90.6,-92.6,-93.4,-90.6","[2,4]:-90.6,-89.2,-89.6,-88.8,-91.8"},
+           /*[3]*/   {"[3,1]:-92.4,-85.4,-90.2,-92.2,-87.6","[3,3]:-92.4,-85.6,-92.6,-89.8,-88","[3,3]:-92,-85.2,-92.6,-90.6,-91.4","[3,4]:-91,-89,-89.4,-92.4,-85.2"},
+           /*[4]*/    {"[4,1]:-92.6,-81.8,-91.4,-92.8,-86.2","[4,2]:-93.8,-81.2,-89.8,-88.2,-89.8","[4,3]:-91.4,-88.2,-87,-92,-89.4","[4,4]:-92.4,-87.8,-85,-91.2,-90.8"}
 
     };
 
@@ -82,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ListAdapter_BTLE_Devices adapter;
         private ListView listView;
         private TextView err;
+    private TextView indexs;
 
     private BroadcastReceiver_BTState mBTStateUpdateReceiver;
         private Scanner_BTLE mBTLeScanner;
@@ -98,13 +100,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        export = (Button) findViewById(R.id.exportar);
+      /*  export = (Button) findViewById(R.id.exportar);
         export.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 exportDB();
             }
-        });
+        });*/
 
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
             Utils.toast(getApplicationContext(), "BLE not supported");
@@ -122,7 +124,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         listView.setOnItemClickListener(this);
         ((ScrollView) findViewById(R.id.scrollView)).addView(listView);
         err = (EditText) findViewById(R.id.errormessage);
-         fab = (FloatingActionButton) findViewById(R.id.fab);
+        indexs = (EditText) findViewById(R.id.indexs);
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         background = (LinearLayout) findViewById(R.id.backgr);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,8 +135,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .setAction("Action", null).show();
                 Buttonflag = 1;
 
-                //fab.setBackgroundTintList(ColorStateList.valueOf());
-                //   fab.setBackgroundColor(R.color.colorPrimaryDark);
                 if (!mBTLeScanner.isScanning()) {
                     startScan();
                  //   background.setBackgroundColor(getResources().getColor(R.color.Sunflower));
@@ -346,41 +348,58 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     try {
 
                             ArrayList<String> ArraySimilares = new ArrayList<>();
-                            int contador = 0;
+                           ArrayList<Double> ArrayIndices = new ArrayList<>();
+
+                        int contador = 0;
                             for (int rows = 0; rows < MatrizRestaCuadratica.length; rows++) {
                                 for (int columns = 0; columns < MatrizRestaCuadratica[rows].length; columns++) {
                                     //de la mitad de la matriz en adelante
-                                    String[] StaticVector = MatrizRestaCuadratica[rows][columns].split(",");
-                                    String[] atenuacionVector = MatrizAtenuaciones[rows][columns].split(",");
-
-
+                                    String[] StaticVector = MatrizAtenuaciones[rows][columns].split(":");
+                                    String[] atenuacionVector = StaticVector[1].split(",");
+                                    String coordenada = StaticVector[0];
+                                   // Toast.makeText(this, Arrays.asList(atenuacionVector).toString()+": "+coordenada, Toast.LENGTH_SHORT).show();
                                     //// TODO: 24/07/2017 aqui se hace la comparacion de vectores de resta cuadratica
-                                    int comparacion = 0;
-                                    String resultadorestacuadratica= "";
+                                    Double resultadorestacuadratica= 0.0;
+                                    String vectorRestaCuadratica = "";
                                     Double res = 0.0;
                                     for (int i = 0; i < 5; i++) {
                                         res +=  Math.pow(Double.valueOf(atenuacionVector[i]) - Double.valueOf(ArrayRSSI[i]),2);
                                         res = Double.valueOf(Math.round(res));
-                                        Double umbralSuperior = res + 2;
-                                        Double umbralInferior = res - 2;
-                                        if (Double.valueOf(StaticVector[i]) <= umbralSuperior &&
-                                                Double.valueOf(StaticVector[i]) >= umbralInferior) {
-                                            comparacion++;
-                                        }
-                                        resultadorestacuadratica+=res+", ";
-
+                                        resultadorestacuadratica+=res;
+                                        //vectorRestaCuadratica+=res+", ";
                                     }
-                                 if (comparacion>=2){
-                                     ArraySimilares.add("s:"+Arrays.asList(StaticVector).toString());
-                                 }
-
+                                    ArraySimilares.add(coordenada);
+                                    ArrayIndices.add(resultadorestacuadratica);
                                 } // end innner loop
+                                //// TODO: 24/07/2017 metodo de ordenamiento de menor a mayor de los resultados
                             } // end upper loop
+
                         String similares = "";
                         for(String elemento : ArraySimilares){
                             similares+= elemento +"\n";
                         }
+
                         err.setText(similares);
+
+                        String indexss = "";
+                        for(Double elemento : ArrayIndices){
+                            indexss+= elemento +"\n";
+                        }
+                        indexs.setText(indexss);
+
+                        Double menor = 99999.9;
+                        String coord= "";
+                        for (int i = 0; i < ArrayIndices.size(); i++){
+                            if(ArrayIndices.get(i)< menor){
+                                menor = ArrayIndices.get(i);
+                                coord= ArraySimilares.get(i);
+                            }
+
+                        }
+
+                        Collections.sort(ArrayIndices);
+                        //// TODO: 24/07/2017 sosa vas a meter en un intent la variable coord y la vas a desplegar en el lienzo
+                        Toast.makeText(this, "MENOR: "+ArrayIndices.get(0)+"COORD"+coord, Toast.LENGTH_LONG).show();
 
 
                     }catch (Exception e){
