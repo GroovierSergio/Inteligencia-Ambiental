@@ -44,7 +44,7 @@ La aplicación con la cuál se mide las señales RSSI también debe ser configur
  También se debe configurar la aplicación para que esta no detecte cualquier dispositivo Bluetooth si no solo las direcciones MAC
  asociadas a los dispositivos Beacon Beeks, como ejemplo nosotros la configuramos de la siguiente manera:
  
-|     Configuración de las direcciones MAC      |
+|     Configuración de  |las direcciones MAC    |
 | --------------------- | --------------------- |
 | 1                     | F1:82:F5:F1:79:E8     |
 | 2                     | C0:62:E9:C5:37:F5     |
