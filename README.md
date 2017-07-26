@@ -1,6 +1,6 @@
 
 <H1 align = "center">
- <img src="https://github.com/EiderDiaz/Inteligencia-Ambiental/blob/master/img/Logo_InteligenciaAmbiental.png" width=72 height=72>
+ <img src="https://github.com/EiderDiaz/Inteligencia-Ambiental/blob/master/img/Logo_InteligenciaAmbiental.png" width=172 height=172>
 </H1>
 <H1 align = "center">
    Inteligencia ambiental
@@ -14,7 +14,7 @@ Este proyecto funciona con [Bluetooth Beacons BEEKS](https://github.com/EiderDia
 
 # Ejemplo
 
-##  aqui va el gif de sosa
+<img src="https://github.com/EiderDiaz/Inteligencia-Ambiental/blob/master/img/Uso_aplicacion.gif">
 
 # :runner: Primeros pasos
 - [preparacion experimental](https://github.com/EiderDiaz/Inteligencia-Ambiental/blob/master/Preparaci%C3%B3n%20experimental.md)
