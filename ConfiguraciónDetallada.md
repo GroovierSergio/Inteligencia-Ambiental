@@ -29,6 +29,8 @@ recomendación es la siguiente:
 
 
 
+La aplicación con la cuál se mide las señales RSSI también debe ser configurada, se recomienda que el tiempo de espera
+para la recepción de las señales de los Beacon Beeks sea de 20 segundos ya que en este lapso se logra estabilizar la señal.
 
 ###  Configuración de la aplicación móvil :
 |Tiempo de lectura      |Alcance                |
@@ -36,8 +38,6 @@ recomendación es la siguiente:
 |      20 segundos      |-95 dBm                |
                                      
 
-La aplicación con la cuál se mide las señales RSSI también debe ser configurada, se recomienda que el tiempo de espera
- para la recepción de las señales de los Beacon Beeks sea de 20 segundos ya que en este lapso se logra estabilizar la señal.
  
  También se debe configurar la aplicación para que esta no detecte cualquier dispositivo Bluetooth si no solo las direcciones MAC
  asociadas a los dispositivos que enviaran las señales, como ejemplo nosotros la configuramos de la siguiente manera:
