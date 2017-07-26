@@ -42,7 +42,7 @@ localización de nodos inalámbricos mediante redes de sensores.
 
  Eduardo Navarro Benjamin Peuker and Michael Quan. Fingerprinting. In Wi-Fi Localization Using RSSI Fingerprinting.
 
- Norberto Redondo Melchor Roberto C. Redondo Melchor and F ́elix Redondo Quintela.
+ Norberto Redondo Melchor Roberto C. Redondo Melchor and Félix Redondo Quintela.
 Gradiente. In Concepto de gradiente y de derivada direccional, 2013.
 
  Glen White. Ventana de hanning. In Introducción al Análisis de Vibraciones, 2010.
