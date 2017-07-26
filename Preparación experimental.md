@@ -13,12 +13,12 @@ Si las balizas que utilizas son de la marca BEEKS, lo primero que debes de hacer
 
  _ _ Nota: Si está utilizando un tipo diferente de balizas, sólo se debe configurar balizas igual que las capturas de pantalla utilizando la aplicación que corresponde a su baliza
  
-Después de establecer las balizas de la misma manera que las capturas de pantalla deben dibujar coordenadas con técnicas de huellas dactilares RSSI (Indicador de Fuerza de Señal Recibida), 
-Utilizamos técnicas de huellas dactilares como el documento publicado por la Universidad Estatal Politécnica de California. De la misma manera, las balizas deben colocarse estratégicamente
-Puntos a través del edificio o sala. Estas balizas emitirán su señal, estas señales serán capturadas por un dispositivo con Android 4.3 y un chipset Bluetooth de Baja Energía 
-(en nuestro caso usamos Motorola G4 con Android 7.0) con nuestra aplicación móvil que medirá la intensidad de las señales recibidas, Señales y finalmente calcular la ubicación.
+Después de establecer las balizas de la misma manera que las capturas de pantalla deben dibujar coordenadas con técnicas de Fingerprinting RSSI (Indicador de Fuerza de Señal Recibida), 
+Utilizamos técnicas de huellas dactilares como el documento publicado por la Universidad Estatal Politécnica de California. De la misma manera, las balizas deben colocarse estratégicamente en puntos a través del edificio o sala. Estas balizas emitirán su señal, estas señales serán capturadas por un dispositivo con Android V.4.3+ y un chipset Bluetooth de Baja Energía 
+(en nuestro caso usamos Motorola G4 con Android 7.0) con nuestra aplicación móvil que medirá la intensidad de las señales recibidas y finalmente calcular la ubicación.
 
 
 
 En nuestro experimento se colocaron las balizas de la siguiente manera :
-  ![](img/SetupBeeks.jpg?raw=true) 
+<img src="https://github.com/EiderDiaz/Inteligencia-Ambiental/blob/master/img/lab16cuadros.jpg" width=400 height=400>
+  
