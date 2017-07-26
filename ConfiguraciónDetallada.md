@@ -16,13 +16,13 @@ de las balizas se deberán hacer pruebas y decidir cual es la más adecuada para
 recomendación es la siguiente:
 
 
-|                   Day |Mode                    |
+##                  Day Mode :                    
 | --------------------- | --------------------- |
 | Advertisement Rate    | 1 Hz (Once a second)  |
 | Transmission Power    | -16 dBm               |
 
 
-|                  Night| Mode                  |
+##               Night Mode :              
 | --------------------- | --------------------- |
 | Advertisement Rate    | 1 Hz (Once a second)  |
 | Transmission Power    | -16 dBm               |
@@ -32,7 +32,7 @@ recomendación es la siguiente:
 ## Configuración de la aplicación móvil.
 
 
-|    Configuración de la| aplicación móvil      |
+##   Configuración de la| aplicación móvil :
 | --------------------- | --------------------- |
 |Tiempo de lectura      | 20 segundos           |
 | Alcance               | -95 dBm               |
@@ -41,9 +41,10 @@ La aplicación con la cuál se mide las señales RSSI también debe ser configur
  para la recepción de las señales de los Beacon Beeks sea de 20 segundos ya que en este lapso se logra estabilizar la señal.
  
  También se debe configurar la aplicación para que esta no detecte cualquier dispositivo Bluetooth si no solo las direcciones MAC
- asociadas a los dispositivos Beacon Beeks, como ejemplo nosotros la configuramos de la siguiente manera:
+ asociadas a los dispositivos que enviaran las señales, como ejemplo nosotros la configuramos de la siguiente manera:
  
-|     Configuración de  |las direcciones MAC    |
+ ## Configuración de  las direcciones MAC :  
+|Número de Beacon       |Dirección MAC          |
 | --------------------- | --------------------- |
 | 1                     | F1:82:F5:F1:79:E8     |
 | 2                     | C0:62:E9:C5:37:F5     |
