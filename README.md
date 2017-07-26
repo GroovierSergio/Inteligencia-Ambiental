@@ -37,8 +37,8 @@ Este proyecto funciona con [Bluetooth Beacons BEEKS](https://github.com/EiderDia
 - Derechos de autor y licencia: especifique el tipo de licencia (normalmente "Apache 2.0" o "Todos los derechos reservados y confidenciales") y consulte el archivo LICENSE.md. No pegue el contenido de la licencia aquí.
 - Cómo contribuir ()vemos despues
 ### Referencias
-Jose de J RUGELES and Deiby LEON. Tecnicas basadas en distancias. In Tecnicas de
-localizacion de nodos inalambricos mediante redes de sensores.
+Jose de J RUGELES and Deiby LEON. Técnicas basadas en distancias. In Técnicas de
+localización de nodos inalámbricos mediante redes de sensores.
 
  Eduardo Navarro Benjamin Peuker and Michael Quan. Fingerprinting. In Wi-Fi Locali-
 zation Using RSSI Fingerprinting.
@@ -46,6 +46,6 @@ zation Using RSSI Fingerprinting.
  Norberto Redondo Melchor Roberto C. Redondo Melchor and F ́elix Redondo Quintela.
 Gradiente. In Concepto de gradiente y de derivada direccional, 2013.
 
- Glen White. Ventana de hanning. In Introduccion al Analisis de Vibraciones, 2010.
+ Glen White. Ventana de hanning. In Introducción al Análisis de Vibraciones, 2010.
  
  Elena Alvarez Saiz. Gradiente. In  ́Miscelanea: Gradiente y curvas de nivel., 2014.
