@@ -16,12 +16,12 @@ de las balizas se deberán hacer pruebas y decidir cual es la más adecuada para
 recomendación es la siguiente:
 
 
-##                  Day Mode :                    
+###                  Day Mode :                    
 | Advertisement Rate    |  Transmission Power   |
 |-----------------------|-----------------------|
 | 1 Hz (Once a second)  |  -16 dBm              |
 
-##                  Night Mode :                    
+###                 Night Mode :                    
 | Advertisement Rate    |  Transmission Power   |
 |-----------------------|-----------------------|
 | 1 Hz (Once a second)  |  -16 dBm              |
@@ -30,7 +30,7 @@ recomendación es la siguiente:
 
 
 
-##   Configuración de la aplicación móvil :
+###  Configuración de la aplicación móvil :
 |Tiempo de lectura      |Alcance                |
 | --------------------- | --------------------- |
 |      20 segundos      |-95 dBm                |
