@@ -1,7 +1,7 @@
 # Configuración detallada
 
 
-##Configuración de los Beacon Beeks.
+## Configuración de los Beacon Beeks.
 
 En esta parte explicaremos el porque de las configuraciones para los Beacon Beeks y para la aplicación que lee las señales.
 
