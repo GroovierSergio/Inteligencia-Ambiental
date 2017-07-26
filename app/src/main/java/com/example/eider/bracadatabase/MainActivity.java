@@ -400,6 +400,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Collections.sort(ArrayIndices);
                         //// TODO: 24/07/2017 sosa vas a meter en un intent la variable coord y la vas a desplegar en el lienzo
                         Toast.makeText(this, "MENOR: "+ArrayIndices.get(0)+"COORD"+coord, Toast.LENGTH_LONG).show();
+                        Intent inten = new Intent(this,Canvas.class);
+                        inten.putExtra("coordenada",coord);
+                        startActivity(inten);    
 
 
                     }catch (Exception e){
