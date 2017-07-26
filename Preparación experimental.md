@@ -33,6 +33,11 @@ La inclinación del dispositivo móvil debe ser entre  0 grados y 45 grados como
 
 <img src="https://github.com/EiderDiaz/Inteligencia-Ambiental/blob/master/img/inclinacion.jpg" width=500 height=400>
 
+la orientación al momento de realizar las pruebas se recomienda sea siempre volteando hacía un mismo lado, en nuestro caso las pruebas las hicimos dirigiendonos de frente al edificio CETEC torre Norte del Tecnológico de Monterrey como se muestra en la figura.
+
+<img src="https://github.com/EiderDiaz/Inteligencia-Ambiental/blob/master/img/orientacion.jpg" width=500 height=400>
+
+
 
 
 
