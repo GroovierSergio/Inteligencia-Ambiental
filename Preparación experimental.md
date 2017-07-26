@@ -37,6 +37,9 @@ la orientación al momento de realizar las pruebas se recomienda sea siempre vol
 
 <img src="https://github.com/EiderDiaz/Inteligencia-Ambiental/blob/master/img/orientacion.jpg" width=500 height=400>
 
+Estos son requerimientos para realizar las pruebas de tal forma que sean desarrolladas de la misma manera y así evitar irregularidades al momento de obtener los resultados.
+
+
 
 
 
