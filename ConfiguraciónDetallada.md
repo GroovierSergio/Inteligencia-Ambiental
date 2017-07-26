@@ -18,12 +18,12 @@ recomendación es la siguiente:
 
 ##                  Day Mode :                    
 | Advertisement Rate    |  Transmission Power   |
-|-----------------------------------------------|
+|-----------------------|-----------------------|
 | 1 Hz (Once a second)  |  -16 dBm              |
 
 ##                  Night Mode :                    
 | Advertisement Rate    |  Transmission Power   |
-|-----------------------------------------------|
+|-----------------------|-----------------------|
 | 1 Hz (Once a second)  |  -16 dBm              |
 
 
