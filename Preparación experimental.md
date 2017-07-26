@@ -21,4 +21,4 @@ Puntos a través del edificio o sala. Estas balizas emitirán su señal, estas s
 
 
 En nuestro experimento se colocaron las balizas de la siguiente manera :
-  ![](img/LocationBEEKS.jpg?raw=true) 
+  ![](img/SetupBeeks.jpg?raw=true) 
