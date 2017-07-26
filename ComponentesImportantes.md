@@ -1,5 +1,5 @@
 # Componentes importantes
-## - _Este documento se muestran componentes importantes de la app para su fácil comprensión
+## > Este documento se muestran componentes importantes de la app para su fácil comprensión
 
 ### BroadcastReceiver_BTState
 Como esta app trata principalmente de señales de bluetooth, a continuación se describe una clase que su función es detectar cuando el adaptador bluetooth cambie de estado y notificar con un toast y asi saber que pasa en el dispositivo o teléfono inteligente.
