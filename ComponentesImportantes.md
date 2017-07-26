@@ -1,3 +1,5 @@
+
+
 # Componentes importantes
  ## *Este documento se muestran componentes importantes de la app para su fácil comprensión*
 
@@ -34,3 +36,8 @@ public class BroadcastReceiver_BTState extends BroadcastReceiver {
     }
 }
 ```
+### BTLE_Device
+
+
+
+
