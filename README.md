@@ -40,8 +40,7 @@ Este proyecto funciona con [Bluetooth Beacons BEEKS](https://github.com/EiderDia
 Jose de J RUGELES and Deiby LEON. Técnicas basadas en distancias. In Técnicas de
 localización de nodos inalámbricos mediante redes de sensores.
 
- Eduardo Navarro Benjamin Peuker and Michael Quan. Fingerprinting. In Wi-Fi Locali-
-zation Using RSSI Fingerprinting.
+ Eduardo Navarro Benjamin Peuker and Michael Quan. Fingerprinting. In Wi-Fi Localization Using RSSI Fingerprinting.
 
  Norberto Redondo Melchor Roberto C. Redondo Melchor and F ́elix Redondo Quintela.
 Gradiente. In Concepto de gradiente y de derivada direccional, 2013.
