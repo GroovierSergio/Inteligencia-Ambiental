@@ -27,8 +27,11 @@ En nuestro experimento se colocaron las balizas de la siguiente manera :
 A continuacion se describe los parametros en los que se deben realizar los experimentos.Esto con el fin de que todos los experimentos se realicen de forma uniforme y bajo las mismas condiciones.El dispositivo movil debe a estar en una altura de ente 120 cm a 130 cm en relación al piso.Esta es la altura que por lo general, cualquier persona sostiene el dispositivo, y en la cual los datos son recabados, en la siguiente figura se muestra de manera grafica la postura adecuada.
 
 
-<img src="https://github.com/EiderDiaz/Inteligencia-Ambiental/blob/master/img/altura.jpg" width=600 height=500>
+<img src="https://github.com/EiderDiaz/Inteligencia-Ambiental/blob/master/img/altura.jpg" width=500 height=400>
 
+La inclinación del dispositivo móvil debe ser entre  0 grados y 45 grados como se muestra en la siguiente figura.
+
+<img src="https://github.com/EiderDiaz/Inteligencia-Ambiental/blob/master/img/inclinacion.jpg" width=500 height=400>
 
 
 
