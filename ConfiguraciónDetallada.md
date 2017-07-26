@@ -6,8 +6,7 @@
 En esta parte explicaremos el porque de las configuraciones para los Beacon Beeks y para la aplicación que lee las señales.
 
 ### 1 Hz.
- Se eligió 1 Hz ya que es la máxima configuración posible. Esto significa que se envía una señal por segundo. No se puede configurar
- a mayor potencia, al menos para el modelo de Beacon Beeks utilizados en este proyecto. Por lo que se debe mantener así.
+ Se eligió 1 Hz ya que es la máxima configuración posible. Esto significa que se envía una señal por segundo al menos para el modelo de Beacon Beeks utilizados en este proyecto. La configuración a esa velocidad genera menos irregularidad entre las señales al momento de escanearlas.
 
 
 ### -16 dBm.
