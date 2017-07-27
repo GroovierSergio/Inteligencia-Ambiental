@@ -1,6 +1,8 @@
-Este documento se muestran componentes importantes de la app para su fácil comprensión
+# Componentes importantes
+Esta sección se muestra la codificación desarrollada para la funcionalidad de la aplicación.
+
 ### BroadcastReceiver_BTState
-Como esta app trata principalmente de señales de bluetooth a continuación, se describe una clase que su función es detectar cuando el adaptador bluetooth cambie de estado y notificar con un toast y así saber que pasa en el dispositivo o teléfono inteligente.
+A continuación, se describe una clase la cual tiene como función detectar cuando el adaptador bluetooth cambie de estado y notificar con un toast, de esta manera saber que pasa en el dispositivo o teléfono inteligente.
 
 ```java
 
@@ -37,7 +39,7 @@ public class BroadcastReceiver_BTState extends BroadcastReceiver {
 
 ### BTLE_Device
 
-En los bloques de código a continuación se explica la función de la clase BTLE_Device, la cual almacena los datos de todos los dispositivos BLE que escanea en el área:
+En los siguientes bloques de código se explica la función de la clase BTLE_Device, la cual almacena los datos de todos los dispositivos BLE (Bluetooth Low Energy) que escanea en el área:
 ```java
 public BTLE_Device(android.bluetooth.BluetoothDevice bluetoothDevice) {
        this.bluetoothDevice = bluetoothDevice;
@@ -61,14 +63,14 @@ public int getRSSI() {
 ```
 
 ### ListAdapter_BTLE_Devices
-El ListAdapter es una clase que prepara los valores de los dispositivos bluetooth escaneados y los muestra en un objeto de tipo lista (ListView), debido a que la aplicación en un inicio detectaba todos los dispositivos bluetooth de baja energía que se encontraban en el área y únicamente queríamos la información de los beacon, hicimos un pequeño filtro que explicaremos más adelante con la dirección MAC de esos dispositivos y los metimos a un arreglo, de igual manera les pusimos los nombres para que no nos lanzara el que da por default, si no unos que nosotros elegimos:
+El *ListAdapter* es una clase que prepara los valores de los dispositivos bluetooth escaneados y los muestra en un objeto de tipo lista (ListView), debido a que la aplicación en un inicio detectaba todos los dispositivos bluetooth de baja energía que se encontraban en el área y únicamente era requerida la información de los Beacon Beeks, se hizo un pequeño filtro con la dirección MAC de esos dispositivos despues fueron añadidos a un arreglo, esta parte esta explicada a mayor detalle más adelante en la clase *MainActivity*, de igual manera los nombres que los Beacon traen por default fueron cambiados para mejorar el entendimiento de los mismos:
 ```java
 
 String[] MyBeaconsMac = {"F1:82:F5:F1:79:E8", "C0:62:E9:C5:37:F5", "F7:D4:CF:09:98:F0" ,"DD:BE:F9:A1:D8:99","D4:88:E6:45:E1:2B"};
 String[] MyBeaconsName = {"BEACON 1", "BEACON 2", "BEACON 3" ,"BEACON 4","BEACON 5"};
 
 ```
-Ya teniendo en cuenta esto, está clase tiene un constructor el cual va a recibir parámetros como la activity en la que se encontrará, un arrayList que contendrá los datos recabados de la clase BTLE_Device: 
+Ya teniendo en cuenta esto, está clase tiene un constructor el cual va a recibir parámetros como la *activity* en la que se encontrará, un *arrayList* que contendrá los datos recabados de la clase *BTLE_Device*: 
 ```java
 public ListAdapter_BTLE_Devices(Activity activity, int resource, ArrayList<BTLE_Device> objects) {
     super(activity.getApplicationContext(), resource, objects);
@@ -83,7 +85,7 @@ public ListAdapter_BTLE_Devices(Activity activity, int resource, ArrayList<BTLE_
 ### Utils
 Esta clase únicamente tiene funciones extras que fueron creadas y separadas del código principal, para que fuese más entendible, aquí se tienen funciones únicamente para mensajes. 
 
-La validación de que el bluetooth este encendido en el dispositivo se ejecuta mediante el siguiente código:
+La validación de que el Bluetooth este encendido en el dispositivo se ejecuta mediante el siguiente código:
 ```java
 public class Utils {
 
@@ -100,7 +102,7 @@ public class Utils {
     }
 ```
 
-En el siguiente código, se manda a llamar una actividad en la cual activa el bluetooth:
+En el siguiente código, se manda a llamar una actividad en la cual activa el Bluetooth:
 
 ```java
     public static void requestUserBluetooth(Activity activity) {
@@ -110,7 +112,7 @@ En el siguiente código, se manda a llamar una actividad en la cual activa el bl
 ```
 ### Scanner_BTLE
 
-Esta clase se encarga de almacenar todos los datos del escaneo de los dispositivos tanto como el período de escaneo como el nivel de atenuación maxima y se realiza el proceso por medio de la clase handler (Hilos de programación).
+Esta clase se encarga de almacenar todos los datos del escaneo de los dispositivos así como el período de escaneo y el nivel de atenuación máxima. El proceso es realizado por medio de la clase *handler* (Hilos de programación).
 
 ```java
 public class Scanner_BTLE {
@@ -216,7 +218,7 @@ el período antes decretado se agrega al dispositivo junto con el RSSI:
 ```
 ### MainActivity
  
-En la clase principal que concentra las clases vistas hasta el momento, procedemos a desmenusar el código:
+Esta es la clase principal que concentra las clases mencionadas hasta el momento, ahora procedemos a fragmentar el código:
 ```java
 public static final int REQUEST_ENABLE_BT = 1;
 public static final int BTLE_SERVICES = 2;
@@ -243,19 +245,16 @@ FloatingActionButton fab;
 int Buttonflag = 0;
 
 ```
-En el código anterior, mostramos las variables que se usaran principalmente en este código, utilizamos el arreglo *MyBeaconsMac* para guardar las direcciones MAC de interes, por otra parte usamos *ArrayMacAddress* y *ArrayRSSI* para ordenar los datos recibidos en cada escaneada.
+En el código anterior, mostramos las variables que se usaran principalmente en este código, utilizamos el arreglo *MyBeaconsMac* para guardar las direcciones MAC de interés, por otra parte usamos *ArrayMacAddress* y *ArrayRSSI* para ordenar los datos recibidos cada vez que sea ejecutado el scanner.
 
 La matriz que se muestra a continuación, es el resultado obtenido en experimentos de medición. En esta matriz se guarda el promedio obtenido de las atenuaciones.
 
 *Ejemplo:*
 1: -89,-85.6,-90.8,-90.8,-89.6
 
-El primer elemento (-89) representa la atenuación del beacon 1 en la coordenada [1,1].
-El segundo elemento (-85.6) representa la atenuación del beacon 2 en la coordenada [1,1].
-y así sucesivamente.
-
-Para ver más información detallada, consulte el siguiente enlance: 
-# Intersar link del experimento aquí
+El primer elemento (-89) representa la atenuación del beacon 1 en la coordenada [1,1]. <br>
+El segundo elemento (-85.6) representa la atenuación del beacon 2 en la coordenada [1,1]. <br>
+y así sucesivamente para los 3 Beacon restantes.<br>
 
 ```java
 
@@ -268,10 +267,12 @@ Para ver más información detallada, consulte el siguiente enlance:
 
 
 ```
-Con esta matriz se obtendran índices con el metodo resta cuadrática (insertar experimento de resta cuadrática) y obtener el valor minimo y la gradiente. 
+Con esta matriz se obtendrán índices con el método [resta cuadrática](https://drive.google.com/open?id=0B_SXGEKN91UQUDJHUjlQcnd0U2c) para obtener el valor mínimo y la [Gradiente](ttps://drive.google.com/open?id=0B_SXGEKN91UQX0FvV1ltRGR4X3M). 
+
+--Nota: Para poder apreciar los datos de los experimentos se deben descargar los archivos.
 
 
-En el siguiente módulo se empieza a inicializar las variables declaradas anteriormente, aquí la más destacable es *mBTLeScanner* puesto que es donde requerimos poner el tiempo y la potencia con la que se escanea. Gracias a las pruebas realizadas anteriormente decidimos implementar un estandar de 20 segundos de tiempo y -95 dbm de potencia.
+En el siguiente módulo se empieza a inicializar las variables declaradas anteriormente, aquí la más destacable es *mBTLeScanner* puesto que es donde requerimos poner el tiempo y la potencia con la que se escanea. Gracias a las pruebas realizadas anteriormente decidimos implementar un estándar de 20 segundos de tiempo y -95 dbm de potencia.
 ```java
         mBTStateUpdateReceiver = new         BroadcastReceiver_BTState(getApplicationContext());
         mBTLeScanner = new Scanner_BTLE(this, 20000, -95 );
@@ -310,7 +311,8 @@ Se crean métodos para iniciar y detener el escaneo de los beacons como los que 
     }
 ```
  
-A continuación, se nos presenta el método que le pasa los datos a la clase BTLE_Device para que vaya agregando la información que se recopilando del beacon:
+A continuación, se nos presenta el método que le pasa los datos a la clase BTLE_Device para que vaya agregando la información que se va recopilando del Beacon:
+
 ```java
 public void addDevice(BluetoothDevice device, int rssi) {
 
@@ -331,5 +333,50 @@ public void addDevice(BluetoothDevice device, int rssi) {
 }
 ```
 
+## Canvas
+Clase encargada de mostrar de manera gráfica la localización de una persona en un plano 2D, el cual se ha construido por medio de imágenes en una matriz 4x4, tal como podran observar en el siguiente módulo de código:
+```java
+try {
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 4; j++) {
+                    imagenes[i][j] = new ImageView(getApplicationContext());
+                    imagenes[i][j].setPadding(1, 1, 1, 1);
+                    imagenes[i][j].setImageResource(R.drawable.casilla);
+                    // imagenes[i][j].setId(i);
+                    //Lugar donde pongo la accion que me marca en un toast los id de los imageView
+                    lienzoImagenes.addView(imagenes[i][j]);
+                }
+            }
+        }catch (Exception e)
+        {
+            Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+        }
+```
+
+Este plano dibuja un punto en la coordenada que se recibe desde el *MainActivity* al finalizar el escaneo de los Beacons :
+
+```java
+tvCoordenadasX=(TextView)findViewById(R.id.tvCoordenadasX);
+        String acomodo="    \t 1 \t\t\t 2 \t\t\t 3 \t\t  4\t\t\t";
+        tvCoordenadasX.setText(acomodo);
+          
+        int coordenada = getIntent().getExtras().getInt("coordenada");
+        String RealCoord = Utils.IntToCoord(coordenada);
+        String[] coor_array = RealCoord.split(",");
+        String coor_arrayX = coor_array[0];
+        String coor_arrayY = coor_array[1];
+        Toast.makeText(this,"Las coordenadas son: "+coor_arrayX +" y "+ coor_arrayY,Toast.LENGTH_LONG).show();
+        int x=Integer.parseInt(coor_arrayX);
+        int y= Integer.parseInt(coor_arrayY);
+        try
+        {
+            imagenes[x-1][y-1].setImageResource(R.drawable.circulo);
+            
+        }catch (Exception e)
+        {
+            Toast.makeText(this,e.getMessage(),Toast.LENGTH_LONG).show();
+        }
+```
+Con esto se concluye las partes más importantes de la aplicación.
 
 
