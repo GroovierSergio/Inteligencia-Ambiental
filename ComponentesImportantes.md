@@ -256,9 +256,6 @@ El primer elemento (-89) representa la atenuación del beacon 1 en la coordenada
 El segundo elemento (-85.6) representa la atenuación del beacon 2 en la coordenada [1,1]. <br>
 y así sucesivamente para los 3 Beacon restantes.<br>
 
-Para ver más información detallada, consulte el siguiente enlance: 
-# Intersar link del experimento aquí
-
 ```java
 
     private final String[][] MatrizAtenuaciones = new String[][] {
@@ -270,7 +267,7 @@ Para ver más información detallada, consulte el siguiente enlance:
 
 
 ```
-Con esta matriz se obtendrán índices con el método [resta cuadrática](insertar experimento de resta cuadrática) obtener el valor mínimo y la gradiente. 
+Con esta matriz se obtendrán índices con el método [resta cuadrática](https://drive.google.com/open?id=0B_SXGEKN91UQUDJHUjlQcnd0U2c) obtener el valor mínimo y la gradiente. 
 
 
 En el siguiente módulo se empieza a inicializar las variables declaradas anteriormente, aquí la más destacable es *mBTLeScanner* puesto que es donde requerimos poner el tiempo y la potencia con la que se escanea. Gracias a las pruebas realizadas anteriormente decidimos implementar un estándar de 20 segundos de tiempo y -95 dbm de potencia.
