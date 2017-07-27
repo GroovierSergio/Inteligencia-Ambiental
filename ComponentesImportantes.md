@@ -43,7 +43,7 @@ public BTLE_Device(android.bluetooth.BluetoothDevice bluetoothDevice) {
        this.bluetoothDevice = bluetoothDevice;
     } 
 ```
-El constructor obtiene un objeto de tipo bluetooth, lo cual nos da acceso a observar los datos como el nombre del dispositivo, su dirección MAC, etc. La cual se logra con los siguientes métodos:
+El constructor obtiene un objeto de tipo bluetooth, lo cual nos da acceso a observar los datos como el nombre del dispositivo, su dirección MAC y el RSSI. La cual se logra con los siguientes getters settters:
 ```java
 public String getAddress() {
         return bluetoothDevice.getAddress();
@@ -78,57 +78,12 @@ public ListAdapter_BTLE_Devices(Activity activity, int resource, ArrayList<BTLE_
     devices = objects;
 }
 ```
-Para poder realizar el proceso de obtención de datos, requerimos un método de tipo View el cual se encargará de agarrar información almacenada en el BTLE_Device.
 
-```java
-public View getView(int position, View convertView, ViewGroup parent) {
 
-    if (convertView == null) {
-        LayoutInflater inflater =
-                (LayoutInflater) activity.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        convertView = inflater.inflate(layoutResourceID, parent, false);
-    }
+### Utils
+Esta clase únicamente tiene funciones extras que fueron creadas y separadas del código principal, para que fuese más entendible, aquí se tienen funciones únicamente para mensajes. 
 
-    BTLE_Device device = devices.get(position);
-    String name = device.getName();
-    //TODO: cambiar el nombre del beacon por el numero de beacon
-    for (int i = 0; i < MyBeaconsMac.length; i++) {
-        if (MyBeaconsMac[i].equals(device.getAddress())) {
-            name = MyBeaconsName[i];
-        }
-    }
-    String address = device.getAddress();
-    int rssi = device.getRSSI();
-
-    TextView tv = null;
-
-    tv = (TextView) convertView.findViewById(R.id.tv_name);
-    if (name != null && name.length() > 0) {
-        tv.setText(name);
-    }
-    else {
-        tv.setText("No Name");
-    }
-    TextView tv_rssi = null;
-
-    tv_rssi = (TextView) convertView.findViewById(R.id.tv_rssi);
-    tv_rssi.setText("RSSI: " + Integer.toString(rssi));
-
-    TextView tv_macaddr = null;
-    tv_macaddr = (TextView) convertView.findViewById(R.id.tv_macaddr);
-    if (address != null && address.length() > 0) {
-        tv_macaddr.setText(device.getAddress());
-    }
-    else {
-        tv_macaddr.setText("No Address");
-    }
-
-    return convertView;
-}
-```
-
-###Utils
-Esta clase únicamente tiene funciones extras que fueron creadas y separadas del código principal, para que fuese más entendible, aquí se tienen funciones únicamente para mensajes y la validación de que el bluetooth este encendido en el dispositivo:
+La validación de que el bluetooth este encendido en el dispositivo se ejecuta mediante el siguiente código:
 ```java
 public class Utils {
 
@@ -143,60 +98,19 @@ public class Utils {
             return true;
         }
     }
+```
 
+En el siguiente código, se manda a llamar una actividad en la cual activa el bluetooth:
+
+```java
     public static void requestUserBluetooth(Activity activity) {
         Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
         activity.startActivityForResult(enableBtIntent, MainActivity.REQUEST_ENABLE_BT);
     }
-
-    public static IntentFilter makeGattUpdateIntentFilter() {
-
-        final IntentFilter intentFilter = new IntentFilter();
-
-        intentFilter.addAction(Service_BTLE_GATT.ACTION_GATT_CONNECTED);
-        intentFilter.addAction(Service_BTLE_GATT.ACTION_GATT_DISCONNECTED);
-        intentFilter.addAction(Service_BTLE_GATT.ACTION_GATT_SERVICES_DISCOVERED);
-        intentFilter.addAction(Service_BTLE_GATT.ACTION_DATA_AVAILABLE);
-
-        return intentFilter;
-    }
-
-    public static String hexToString(byte[] data) {
-        final StringBuilder sb = new StringBuilder(data.length);
-
-        for(byte byteChar : data) {
-            sb.append(String.format("%02X ", byteChar));
-        }
-
-        return sb.toString();
-    }
-
-    public static int hasWriteProperty(int property) {
-        return property & BluetoothGattCharacteristic.PROPERTY_WRITE;
-    }
-
-    public static int hasReadProperty(int property) {
-        return property & BluetoothGattCharacteristic.PROPERTY_READ;
-    }
-
-    public static int hasNotifyProperty(int property) {
-        return property & BluetoothGattCharacteristic.PROPERTY_NOTIFY;
-    }
-
-    public static void toast(Context context, String string) {
-
-        Toast toast = Toast.makeText(context, string, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 0);
-        toast.show();
-    }
-}
-
 ```
-###Scanner_BTLE
+### Scanner_BTLE
 
-Esta clase se encarga de realizar el escaneo de los dispositivos en un periodo de 20 segundos y se realiza el proceso por medio de la clase handler:
-
-
+Esta clase se encarga de almacenar todos los datos del escaneo de los dispositivos tanto como el período de escaneo como el nivel de atenuación maxima y se realiza el proceso por medio de la clase handler (Hilos de programación).
 
 ```java
 public class Scanner_BTLE {
@@ -242,13 +156,10 @@ public class Scanner_BTLE {
         scanLeDevice(false);
     }
 
-    // If you want to scan for only specific types of peripherals,
-    // you can instead call startLeScan(UUID[], BluetoothAdapter.LeScanCallback),
-    // providing an array of UUID objects that specify the GATT services your app supports.
+    
     private void scanLeDevice(final boolean enable) {
         if (enable && !mScanning) {
-          //  Utils.toast(ma.getApplicationContext(), "Starting BLE scan...");
-
+          
             // Stops scanning after a pre-defined scan period.
             mHandler.postDelayed(new Runnable() {
                 @Override
@@ -276,7 +187,10 @@ public class Scanner_BTLE {
             }
         }
     }
-
+```
+En este módulo de código se ejecuta un hilo en el que se va actualizando los datos de la intensidad de señal y al finalizar
+el período antes decretado se agrega al dispositivo junto con el RSSI:
+```java
     // Device scan callback.
     private BluetoothAdapter.LeScanCallback mLeScanCallback =
             new BluetoothAdapter.LeScanCallback() {
