@@ -72,4 +72,29 @@ public class Utils {
         toast.setGravity(Gravity.CENTER | Gravity.BOTTOM, 0, 0);
         toast.show();
     }
+    
+    public static String IntToCoord(int number) {
+          String res ="";
+        if(1 == number)res = "1,1";
+        if(2 == number)res = "1,2";
+        if(3 == number)res = "1,3";
+        if(4 == number)res = "1,4";
+
+        if(5 == number)res = "2,1";
+        if(6 == number)res = "2,2";
+        if(7 == number)res = "2,3";
+        if(8 == number)res = "2,4";
+
+        if(9 == number)res = "3,1";
+        if(10 == number)res = "3,2";
+        if(11 == number)res = "3,3";
+        if(12 == number)res = "3,4";
+
+        if(13 == number)res = "4,1";
+        if(14 == number)res = "4,2";
+        if(15 == number)res = "4,3";
+        if(16 == number)res = "4,4";
+
+        return res;
+    }
 }
