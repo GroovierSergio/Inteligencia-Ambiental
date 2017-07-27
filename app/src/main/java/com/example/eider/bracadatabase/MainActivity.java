@@ -62,20 +62,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String ArrayRSSI[] = {"-110","-110",  "-110","-110", "-110"};
         // you must change this mac addres array with your beacons mac adresses
         String[] MyBeaconsMac = {"F1:82:F5:F1:79:E8", "C0:62:E9:C5:37:F5", "F7:D4:CF:09:98:F0" ,"DD:BE:F9:A1:D8:99","D4:88:E6:45:E1:2B"};
-   private final String[][] MatrizRestaCuadratica = new String[][] {
-//// TODO: 24/07/2017 agregar matriz de restas cuadratica
-           /*[1]*/      {"4,6.76,0.64 ,1.44 ,5.76","4,12.96,0.36,0.04,17.64","33.64,14.44,0.04,33.64,0.04","17.64,36,14.44,9,0.04"},
-           /*[2]*/     {"2.56,16,2.56,14.44,3.24","16,77.44,31.36,2.56,11.56","12.96,57.76,1.96,0.36,5.76","1.96,7.84,6.76,17.64,0.64"},
-           /*[3]*/   {"2.56,54.76,0.64,3.24,0.16","2.56,0.36,1.96,17.64,9","4,0.64,43.56,0.16,19.36","1,9,2.56,1.96,46.24"},
-           /*[4]*/    {"1.96,10.24,0.16,1.44,14.44","0.64,33.64,0.04,3.24,4.84","6.76,0.04,4,25,21.16","1.96,4.84,36,3.24,10.24"}
 
-   };
     private final String[][] MatrizAtenuaciones = new String[][] {
 //// TODO: 24/07/2017 matriz de atenuaciones
-           /*[1]*/      {"[1,1]:-89,-85.6,-90.8,-90.8,-89.6","[1,2]:-90,-82.4,-93.4,-92.8,-88.8","[1,3]:-91.8,-89.8,-91.2,-88.2,-89.8","[1,4]:-89.8,-89,-92.8,-90,-93.2"},
-           /*[2]*/     {"[2,1]:-92.6,-82,-87.6,-92.8,-88.8","[2,1]:-92,-81.2,-88.4,-91.6,-89.4","[2,3]:-92.6,-90.6,-92.6,-93.4,-90.6","[2,4]:-90.6,-89.2,-89.6,-88.8,-91.8"},
-           /*[3]*/   {"[3,1]:-92.4,-85.4,-90.2,-92.2,-87.6","[3,3]:-92.4,-85.6,-92.6,-89.8,-88","[3,3]:-92,-85.2,-92.6,-90.6,-91.4","[3,4]:-91,-89,-89.4,-92.4,-85.2"},
-           /*[4]*/    {"[4,1]:-92.6,-81.8,-91.4,-92.8,-86.2","[4,2]:-93.8,-81.2,-89.8,-88.2,-89.8","[4,3]:-91.4,-88.2,-87,-92,-89.4","[4,4]:-92.4,-87.8,-85,-91.2,-90.8"}
+           /*[1]*/      {"1:-89,-85.6,-90.8,-90.8,-89.6","2:-84.2,-82.4,-89.4,-91.2,-81.8","3:-91.8,-89.8,-91.2,-88.2,-89.8","4:-89.8,-89,-92.8,-90,-93.2"},
+           /*[2]*/     {"5:-91,-84,-83.6,-88.4,-81.4","6:-92,-81.2,-88.4,-91.6,-89.4","7:-92.6,-90.6,-92.6,-93.4,-90.6","8:-90.6,-89.2,-89.6,-88.8,-91.8"},
+           /*[3]*/   {"9:-89.2,-86.2,-84.6,-89.6,-81.8","10:-92.4,-85.6,-92.6,-89.8,-88","11:-92,-85.2,-92.6,-90.6,-91.4","12:-91,-89,-89.4,-92.4,-85.2"},
+           /*[4]*/    {"13:-92.6,-81.8,-91.4,-92.8,-86.2","14:-93.8,-81.2,-89.8,-88.2,-89.8","15:-91.4,-88.2,-87,-92,-89.4","16:-92.4,-87.8,-85,-91.2,-90.8"}
 
     };
 
@@ -223,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 return true;
             case R.id.action_add:
                     //You can remove elements while iterating
-                    //TODO agregar sentencias correctas de sqlit
+                    //TODO agregar sentencias correctas de sql
                insertInSQLite(ArrayMacAddress[0],ArrayRSSI[0],
                        ArrayMacAddress[1],ArrayRSSI[1],
                        ArrayMacAddress[2],ArrayRSSI[2],
@@ -231,7 +224,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                        ArrayMacAddress[4],ArrayRSSI[4]);
                 Toast.makeText(this, "Data insert succesfuly", Toast.LENGTH_SHORT).show();
 
-                    //TODO HASTA AQUIIIIIIIIIII!!
                 return true;
 
             default:
@@ -308,7 +300,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void stopScan() {
         mBTLeScanner.stop();
-
         if (Buttonflag != 0) {
 
             try {
@@ -344,36 +335,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             } catch (Exception e) {
                 Toast.makeText(this, "error men: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
+            ArrayList<String> ArraySimilares = new ArrayList<>();
+            ArrayList<Double> ArrayIndices = new ArrayList<>();
 
-                    try {
 
-                            ArrayList<String> ArraySimilares = new ArrayList<>();
-                           ArrayList<Double> ArrayIndices = new ArrayList<>();
+                          //aqui van los arrays
 
-                        int contador = 0;
-                            for (int rows = 0; rows < MatrizRestaCuadratica.length; rows++) {
-                                for (int columns = 0; columns < MatrizRestaCuadratica[rows].length; columns++) {
-                                    //de la mitad de la matriz en adelante
+                            for (int rows = 0; rows < MatrizAtenuaciones.length; rows++) {
+                                for (int columns = 0; columns < MatrizAtenuaciones[rows].length; columns++) {
                                     String[] StaticVector = MatrizAtenuaciones[rows][columns].split(":");
                                     String[] atenuacionVector = StaticVector[1].split(",");
                                     String coordenada = StaticVector[0];
-                                   // Toast.makeText(this, Arrays.asList(atenuacionVector).toString()+": "+coordenada, Toast.LENGTH_SHORT).show();
-                                    //// TODO: 24/07/2017 aqui se hace la comparacion de vectores de resta cuadratica
+                                    // TODO: 24/07/2017 aqui se hace la comparacion de vectores de resta cuadratica
                                     Double resultadorestacuadratica= 0.0;
-                                    String vectorRestaCuadratica = "";
                                     Double res = 0.0;
+                                    try {
                                     for (int i = 0; i < 5; i++) {
                                         res +=  Math.pow(Double.valueOf(atenuacionVector[i]) - Double.valueOf(ArrayRSSI[i]),2);
                                         res = Double.valueOf(Math.round(res));
                                         resultadorestacuadratica+=res;
-                                        //vectorRestaCuadratica+=res+", ";
                                     }
+                                }catch (Exception e){
+                                    Toast.makeText(this, "error 1" +e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
                                     ArraySimilares.add(coordenada);
                                     ArrayIndices.add(resultadorestacuadratica);
                                 } // end innner loop
                                 //// TODO: 24/07/2017 metodo de ordenamiento de menor a mayor de los resultados
                             } // end upper loop
 
+
+
+                         try {
                         String similares = "";
                         for(String elemento : ArraySimilares){
                             similares+= elemento +"\n";
@@ -404,7 +397,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                        startActivity(inten);
 
                     }catch (Exception e){
-                        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "error 2" +e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
     }
 

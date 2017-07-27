@@ -2,13 +2,16 @@ package com.example.eider.bracadatabase;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.GridLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
-GridLayout lienzoImagenes;
-ImageView[][] imagenes= new ImageView[4][4];
-TextView tvCoordenadasX;
 
 public class Canvas extends AppCompatActivity {
-
+    GridLayout lienzoImagenes;
+    ImageView[][] imagenes= new ImageView[4][4];
+    TextView tvCoordenadasX;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
