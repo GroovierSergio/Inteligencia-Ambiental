@@ -386,24 +386,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             indexss+= elemento +"\n";
                         }
                         indexs.setText(indexss);
+                        
+                        String [] list= indexss.split("\n");
+                        Collections.sort( Arrays.asList(list));
+                        int coord = ArrayIndices.indexOf(Double.valueOf(Arrays.asList(list).get(0)))+1;
+                        int similar1 = ArrayIndices.indexOf(Double.valueOf(Arrays.asList(list).get(1)))+1;
+                        int similar2 = ArrayIndices.indexOf(Double.valueOf(Arrays.asList(list).get(2)))+1;
+                        Toast.makeText(this,"//uno y dos : "+similar1+"&"+similar2, Toast.LENGTH_SHORT).show();
+                        
 
-                        Double menor = 99999.9;
-                        String coord= "";
-                        for (int i = 0; i < ArrayIndices.size(); i++){
-                            if(ArrayIndices.get(i)< menor){
-                                menor = ArrayIndices.get(i);
-                                coord= ArraySimilares.get(i);
-                            }
-
-                        }
-
-                        Collections.sort(ArrayIndices);
                         //// TODO: 24/07/2017 sosa vas a meter en un intent la variable coord y la vas a desplegar en el lienzo
-                        Toast.makeText(this, "MENOR: "+ArrayIndices.get(0)+"COORD"+coord, Toast.LENGTH_LONG).show();
+                        //Toast.makeText(this, "MENOR: "+ArrayRestaCuadratica.get(0)+"COORD"+coord, Toast.LENGTH_LONG).show();
                         Intent inten = new Intent(this,Canvas.class);
-                        inten.putExtra("coordenada",coord);
-                        startActivity(inten);    
-
+                       inten.putExtra("coordenada",coord);
+                        inten.putExtra("similar1",similar1);
+                        inten.putExtra("similar2",similar2);
+                       startActivity(inten);
 
                     }catch (Exception e){
                         Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
