@@ -331,5 +331,49 @@ public void addDevice(BluetoothDevice device, int rssi) {
 }
 ```
 
+## Canvas
+Clase encargada de mostrar de manera gráfica la localización de una persona en un plano 2D, el cual se ha construido por medio de imágenes en una matriz 4x4, tal como podran observar en el siguiente módulo de código:
+```java
+try {
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 4; j++) {
+                    imagenes[i][j] = new ImageView(getApplicationContext());
+                    imagenes[i][j].setPadding(1, 1, 1, 1);
+                    imagenes[i][j].setImageResource(R.drawable.casilla);
+                    // imagenes[i][j].setId(i);
+                    //Lugar donde pongo la accion que me marca en un toast los id de los imageView
+                    lienzoImagenes.addView(imagenes[i][j]);
+                }
+            }
+        }catch (Exception e)
+        {
+            Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+        }
+```
+
+Este plano dibuja un punto en la coordenada que se recibe desde el MainActivity al finalizar el escaneo de los beacons :
+
+```java
+tvCoordenadasX=(TextView)findViewById(R.id.tvCoordenadasX);
+        String acomodo="    \t 1 \t\t\t 2 \t\t\t 3 \t\t  4\t\t\t";
+        tvCoordenadasX.setText(acomodo);
+
+
+        String coordenada = getIntent().getExtras().getString("coordenada");
+        String[] coor_array = coordenada.replace("[","%").split("%");
+        String[] coor_array2 = coor_array[1].split(",");
+        String[] coor_array3 = coor_array2[1].split("]");
+        Toast.makeText(this,"Las coordenadas son: "+coor_array2[0] +" y "+ coor_array3[0],Toast.LENGTH_LONG).show();
+        int x=Integer.parseInt(coor_array2[0]);
+        int y= Integer.parseInt(coor_array3[0]);
+        try
+        {
+            imagenes[x-1][y-1].setImageResource(R.drawable.circulo);
+        }catch (Exception e)
+        {
+            Toast.makeText(this,e.getMessage(),Toast.LENGTH_LONG).show();
+        }
+```
+
 
 
