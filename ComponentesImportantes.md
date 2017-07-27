@@ -310,7 +310,7 @@ Se crean métodos para iniciar y detener el escaneo de los beacons como los que 
     }
 ```
  
-A continuación, se nos presenta el método que le pasa los datos a la clase BTLE_Device para que vaya agregando la información que se recopilando del beacon:
+Para mostrar los dispositivos con sus respectivas RSSI, direcciones MAC y nombres se requiere el siguiente método para que se añadan en el arreglo que los inserta en el ListView:
 ```java
 public void addDevice(BluetoothDevice device, int rssi) {
 
