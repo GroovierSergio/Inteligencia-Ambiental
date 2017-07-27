@@ -269,6 +269,8 @@ y así sucesivamente para los 3 Beacon restantes.<br>
 ```
 Con esta matriz se obtendrán índices con el método [resta cuadrática](https://drive.google.com/open?id=0B_SXGEKN91UQUDJHUjlQcnd0U2c) para obtener el valor mínimo y la [Gradiente](ttps://drive.google.com/open?id=0B_SXGEKN91UQX0FvV1ltRGR4X3M). 
 
+--Nota: Para poder apreciar los datos de los experimentos se deben descargar los archivos.
+
 
 En el siguiente módulo se empieza a inicializar las variables declaradas anteriormente, aquí la más destacable es *mBTLeScanner* puesto que es donde requerimos poner el tiempo y la potencia con la que se escanea. Gracias a las pruebas realizadas anteriormente decidimos implementar un estándar de 20 segundos de tiempo y -95 dbm de potencia.
 ```java
