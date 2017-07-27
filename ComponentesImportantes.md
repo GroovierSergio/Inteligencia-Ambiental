@@ -214,9 +214,9 @@ el período antes decretado se agrega al dispositivo junto con el RSSI:
 
 
 ```
-###MainActivity
+### MainActivity
  
-El MainActivity es la clase principal en la que se utiliza cada una de las clases vistas hasta el momento, trataremos de explicarlo lo más detallado posible ya que es demasiado código lo que se lee, así que empezaremos con la declaración de variables que se necesitan:
+En la clase principal que concentra las clases vistas hasta el momento, procedemos a desmenusar el código:
 ```java
 public static final int REQUEST_ENABLE_BT = 1;
 public static final int BTLE_SERVICES = 2;
@@ -243,86 +243,38 @@ FloatingActionButton fab;
 int Buttonflag = 0;
 
 ```
-En el código anterior, mostramos las variables que se usaran principalmente en este código, mandamos a llamar las clases que hemos estado explicando, así como las direcciones MAC de los beacons para poder realizar el filtro y solo encuentre los dispositivos bluetooth con esas direcciones, un ListView para mostrar los datos de estos, arrayRSSI son los valores que se le dan por default a los rssi de los beacons en caso de que si no detecta alguno, no se quede en 0 y se ponga el valor      de   -110.
-A continuación, para poder predecir la localización de una persona ocupamos las siguientes matrices:
+En el código anterior, mostramos las variables que se usaran principalmente en este código, utilizamos el arreglo *MyBeaconsMac* para guardar las direcciones MAC de interes, por otra parte usamos *ArrayMacAddress* y *ArrayRSSI* para ordenar los datos recibidos en cada escaneada.
+
+La matriz que se muestra a continuación, es el resultado obtenido en experimentos de medición. En esta matriz se guarda el promedio obtenido de las atenuaciones.
+
+*Ejemplo:*
+1: -89,-85.6,-90.8,-90.8,-89.6
+
+El primer elemento (-89) representa la atenuación del beacon 1 en la coordenada [1,1].
+El segundo elemento (-85.6) representa la atenuación del beacon 2 en la coordenada [1,1].
+y así sucesivamente.
+
+Para ver más información detallada, consulte el siguiente enlance: 
+# Intersar link del experimento aquí
+
 ```java
 
-private final String[][] MatrizRestaCuadratica = new String[][] {
-           /*[1]*/      {"4,6.76,0.64 ,1.44 ,5.76","4,12.96,0.36,0.04,17.64","33.64,14.44,0.04,33.64,0.04","17.64,36,14.44,9,0.04"},
-           /*[2]*/     {"2.56,16,2.56,14.44,3.24","16,77.44,31.36,2.56,11.56","12.96,57.76,1.96,0.36,5.76","1.96,7.84,6.76,17.64,0.64"},
-           /*[3]*/   {"2.56,54.76,0.64,3.24,0.16","2.56,0.36,1.96,17.64,9","4,0.64,43.56,0.16,19.36","1,9,2.56,1.96,46.24"},
-           /*[4]*/    {"1.96,10.24,0.16,1.44,14.44","0.64,33.64,0.04,3.24,4.84","6.76,0.04,4,25,21.16","1.96,4.84,36,3.24,10.24"}
-
-   };
     private final String[][] MatrizAtenuaciones = new String[][] {
-           /*[1]*/      {"[1,1]:-89,-85.6,-90.8,-90.8,-89.6","[1,2]:-90,-82.4,-93.4,-92.8,-88.8","[1,3]:-91.8,-89.8,-91.2,-88.2,-89.8","[1,4]:-89.8,-89,-92.8,-90,-93.2"},
-           /*[2]*/     {"[2,1]:-92.6,-82,-87.6,-92.8,-88.8","[2,1]:-92,-81.2,-88.4,-91.6,-89.4","[2,3]:-92.6,-90.6,-92.6,-93.4,-90.6","[2,4]:-90.6,-89.2,-89.6,-88.8,-91.8"},
-           /*[3]*/   {"[3,1]:-92.4,-85.4,-90.2,-92.2,-87.6","[3,3]:-92.4,-85.6,-92.6,-89.8,-88","[3,3]:-92,-85.2,-92.6,-90.6,-91.4","[3,4]:-91,-89,-89.4,-92.4,-85.2"},
-           /*[4]*/    {"[4,1]:-92.6,-81.8,-91.4,-92.8,-86.2","[4,2]:-93.8,-81.2,-89.8,-88.2,-89.8","[4,3]:-91.4,-88.2,-87,-92,-89.4","[4,4]:-92.4,-87.8,-85,-91.2,-90.8"}
-
+           /*[1]*/      {"[1,1]:-89,-85.6,-90.8,-90.8,-89.6","[1,2]:-90,-82.4,-93.4,-92.8,-88.8","[1,3]:-91.8,-89.8,-91.2,-88.2,-89.8","                         [1,4]:-89.8,-89,-92.8,-90,-93.2"},
+           /*[2]*/     {"[2,1]:-92.6,-82,-87.6,-92.8,-88.8","[2,1]:-92,-81.2,-88.4,-91.6,-89.4","[2,3]:-92.6,-90.6,-92.6,-93.4,-90.6","                         [2,4]:-90.6,-89.2,-89.6,-88.8,-91.8"},
+           /*[3]*/   {"[3,1]:-92.4,-85.4,-90.2,-92.2,-87.6","[3,3]:-92.4,-85.6,-92.6,-89.8,-88","[3,3]:-92,-85.2,-92.6,-90.6,-91.4","                           [3,4]:-91,-89,-89.4,-92.4,-85.2"},
+           /*[4]*/    {"[4,1]:-92.6,-81.8,-91.4,-92.8,-86.2","[4,2]:-93.8,-81.2,-89.8,-88.2,-89.8","[4,3]:-91.4,-88.2,-87,-92,-89.4","                           [4,4]:-92.4,-87.8,-85,-91.2,-90.8"}
     };
 
 
 ```
-Con estas matrices la idea es poder sacar unos índices con algo llamado resta cuadrática y lograr comparar entre todos esos cual era el menor y en teoría esa es la coordenada en la que te encuentras.
-Lo siguiente es inicializar todas las variables que sean del tipo de las clases mencionadas anteriormente en el método principal onCreate:
-```java
-protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-       // Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-      /*  export = (Button) findViewById(R.id.exportar);
-        export.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                exportDB();
-            }
-        });*/
+Con esta matriz se obtendran índices con el metodo resta cuadrática (insertar experimento de resta cuadrática) y obtener el valor minimo y la gradiente. 
 
-        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
-            Utils.toast(getApplicationContext(), "BLE not supported");
-            finish();
-        }
+
+En el siguiente módulo se empieza a inicializar las variables declaradas anteriormente, aquí la más destacable es *mBTLeScanner* puesto que es donde requerimos poner el tiempo y la potencia con la que se escanea. Gracias a las pruebas realizadas anteriormente decidimos implementar un estandar de 20 segundos de tiempo y -95 dbm de potencia.
+```java
         mBTStateUpdateReceiver = new         BroadcastReceiver_BTState(getApplicationContext());
         mBTLeScanner = new Scanner_BTLE(this, 20000, -95 );
-        mBTDevicesHashMap = new HashMap<>();
-        mBTDevicesArrayList = new ArrayList<>();
-
-        adapter = new ListAdapter_BTLE_Devices(this, R.layout.btle_device_list_item, mBTDevicesArrayList);
-
-        listView = new ListView(this);
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(this);
-        ((ScrollView) findViewById(R.id.scrollView)).addView(listView);
-        err = (EditText) findViewById(R.id.errormessage);
-        indexs = (EditText) findViewById(R.id.indexs);
-
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        background = (LinearLayout) findViewById(R.id.backgr);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Scanning Beacons ...", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                Buttonflag = 1;
-
-                if (!mBTLeScanner.isScanning()) {
-                    startScan();
-                 //   background.setBackgroundColor(getResources().getColor(R.color.Sunflower));
-
-
-                }
-                else {
-                    stopScan();
-                    fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.Emerald)));
-
-
-                }
-            }
-        });
-    }
-
 ```
 Se crean métodos para iniciar y detener el escaneo de los beacons como los que se muestran a continuación:
 ```java
