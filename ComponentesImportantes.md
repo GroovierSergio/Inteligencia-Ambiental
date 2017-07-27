@@ -252,9 +252,9 @@ La matriz que se muestra a continuación, es el resultado obtenido en experiment
 *Ejemplo:*
 1: -89,-85.6,-90.8,-90.8,-89.6
 
-El primer elemento (-89) representa la atenuación del beacon 1 en la coordenada [1,1].
-El segundo elemento (-85.6) representa la atenuación del beacon 2 en la coordenada [1,1].
-y así sucesivamente para los 3 Beacon restantes.
+El primer elemento (-89) representa la atenuación del beacon 1 en la coordenada [1,1]. <br>
+El segundo elemento (-85.6) representa la atenuación del beacon 2 en la coordenada [1,1]. <br>
+y así sucesivamente para los 3 Beacon restantes.<br>
 
 Para ver más información detallada, consulte el siguiente enlance: 
 # Intersar link del experimento aquí
