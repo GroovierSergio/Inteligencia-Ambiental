@@ -40,17 +40,44 @@ public class Canvas extends AppCompatActivity {
         tvCoordenadasX.setText(acomodo);
           
         int coordenada = getIntent().getExtras().getInt("coordenada");
+        int coordenada1 = getIntent().getExtras().getInt("similar1");
+        int coordenada2 = getIntent().getExtras().getInt("similar2");
+
         String RealCoord = Utils.IntToCoord(coordenada);
+        String RealCoord1 = Utils.IntToCoord(coordenada1);
+        String RealCoord2 = Utils.IntToCoord(coordenada2);
+
         String[] coor_array = RealCoord.split(",");
+        String[] coor_array1 = RealCoord1.split(",");
+        String[] coor_array2= RealCoord2.split(",");
+
+
         String coor_arrayX = coor_array[0];
+        String coor_arrayX1 = coor_array1[0];
+        String coor_arrayX2 = coor_array2[0];
+
         String coor_arrayY = coor_array[1];
+        String coor_arrayY1 = coor_array1[1];
+        String coor_arrayY2 = coor_array2[1];
+
         Toast.makeText(this,"Las coordenadas son: "+coor_arrayX +" y "+ coor_arrayY,Toast.LENGTH_LONG).show();
         int x=Integer.parseInt(coor_arrayX);
         int y= Integer.parseInt(coor_arrayY);
+
+        int x1=Integer.parseInt(coor_arrayX1);
+        int y1= Integer.parseInt(coor_arrayY1);
+
+        int x2=Integer.parseInt(coor_arrayX2);
+        int y2= Integer.parseInt(coor_arrayY2);
+
         try
         {
             imagenes[x-1][y-1].setImageResource(R.drawable.circulo);
-            
+            imagenes[x1-1][y1-1].setImageResource(R.drawable.circulovecino);
+            imagenes[x2-1][y2-1].setImageResource(R.drawable.circulovecino);
+
+
+
         }catch (Exception e)
         {
             Toast.makeText(this,e.getMessage(),Toast.LENGTH_LONG).show();
