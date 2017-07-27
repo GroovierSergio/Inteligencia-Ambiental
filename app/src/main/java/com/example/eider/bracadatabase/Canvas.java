@@ -26,7 +26,7 @@ public class Canvas extends AppCompatActivity {
                     imagenes[i][j].setPadding(1, 1, 1, 1);
                     imagenes[i][j].setImageResource(R.drawable.casilla);
                     // imagenes[i][j].setId(i);
-                    //Lugar donde pongo la accion que me marca en un toast los id de los imageView
+                    //Lugar donde pongo la accion que me marca en un toast los id de los imageVie
                     lienzoImagenes.addView(imagenes[i][j]);
                 }
             }
@@ -44,7 +44,6 @@ public class Canvas extends AppCompatActivity {
         String[] coor_array = RealCoord.split(",");
         String coor_arrayX = coor_array[0];
         String coor_arrayY = coor_array[1];
-
         Toast.makeText(this,"Las coordenadas son: "+coor_arrayX +" y "+ coor_arrayY,Toast.LENGTH_LONG).show();
         int x=Integer.parseInt(coor_arrayX);
         int y= Integer.parseInt(coor_arrayY);
