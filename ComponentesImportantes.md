@@ -353,7 +353,7 @@ try {
         }
 ```
 
-Este plano dibuja un punto en la coordenada que se recibe desde el MainActivity al finalizar el escaneo de los beacons :
+Este plano dibuja un punto en la coordenada que se recibe desde el *MainActivity* al finalizar el escaneo de los Beacons :
 
 ```java
 tvCoordenadasX=(TextView)findViewById(R.id.tvCoordenadasX);
@@ -377,6 +377,6 @@ tvCoordenadasX=(TextView)findViewById(R.id.tvCoordenadasX);
             Toast.makeText(this,e.getMessage(),Toast.LENGTH_LONG).show();
         }
 ```
-
+Con esto se concluye las partes más importantes de la aplicación.
 
 
