@@ -72,9 +72,48 @@ public class Canvas extends AppCompatActivity {
 
         try
         {
-            imagenes[x-1][y-1].setImageResource(R.drawable.circulo);
-            imagenes[x1-1][y1-1].setImageResource(R.drawable.circulovecino);
-            imagenes[x2-1][y2-1].setImageResource(R.drawable.circulovecino);
+            if(x==4)
+            {
+                imagenes[x-4][y-1].setImageResource(R.drawable.circulo);
+            }else if(x==3)
+            {
+                imagenes[x-2][y-1].setImageResource(R.drawable.circulo);
+            }else if(x==2)
+            {
+                imagenes[x][y-1].setImageResource(R.drawable.circulo);
+            }else if (x==1)
+            {
+                imagenes[x+2][y-1].setImageResource(R.drawable.circulo);
+            }
+
+            if(x1==4)
+            {
+                imagenes[x1-4][y1-1].setImageResource(R.drawable.circulovecino);
+            }else if(x1==3)
+            {
+                imagenes[x1-2][y1-1].setImageResource(R.drawable.circulovecino);
+            }else if(x1==2)
+            {
+                imagenes[x1][y1-1].setImageResource(R.drawable.circulovecino);
+
+            }else if (x1==1)
+            {
+                imagenes[x1+2][y1-1].setImageResource(R.drawable.circulovecino);
+            }
+
+            if(x2==4)
+            {
+                imagenes[x2-4][y2-1].setImageResource(R.drawable.circulovecino);
+            }else if(x2==3)
+            {
+                imagenes[x2-2][y2-1].setImageResource(R.drawable.circulovecino);
+            }else if(x2==2)
+            {
+                imagenes[x2][y2-1].setImageResource(R.drawable.circulovecino);
+            }else if (x2==1)
+            {
+                imagenes[x2+2][y2-1].setImageResource(R.drawable.circulovecino);
+            }
 
 
 
